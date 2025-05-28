@@ -80,3 +80,16 @@ body {
   color: #b30000;
   border-color: #f5c2c7;
 }
+
+
+
+/* "movieCarousel"이라는 클래스를 가진 요소 안에 있는 모든 <img> 태그에 적용할 스타일 */
+/* 영화 슬라이드에 쓰일 이미지 사이즈 조정 역할 */
+.movieCarousel{
+  width: 80%;
+  height: 70%;
+  /*object-fit: cover;*/	
+	
+}
+
+
