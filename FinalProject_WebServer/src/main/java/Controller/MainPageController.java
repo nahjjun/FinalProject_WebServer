@@ -28,14 +28,13 @@ public class MainPageController extends HttpServlet {
 		if((loginUser = (LoginUser)session.getAttribute("loginUser")) == null) { // 사용자 로그인 정보가 저장이 안되어 있는 경우, 로그인 전 mainPage를 보내준다.  
 			dispatcher = request.getRequestDispatcher("/mainPage_logouted.jsp");
 		} else {
-			dispatcher = request.getRequestDispatcher("/mainPage_logined.jsp");
+		
 		}
 		dispatcher.forward(request, response);
 	}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 	}
 
 }
