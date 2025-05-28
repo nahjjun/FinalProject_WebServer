@@ -1,6 +1,9 @@
 package Controller;
 
+import java.io.IOException;
+
 import Dto.LoginRequestDto;
+import Entity.LoginUser;
 import Service.LoginService;
 import Util.PasswordUtil;
 import jakarta.servlet.RequestDispatcher;
@@ -9,7 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet({"/LoginController"})
 public class LoginController extends HttpServlet {
@@ -57,10 +60,15 @@ public class LoginController extends HttpServlet {
             dispatcher.forward(request, response);
          } else {
             System.out.println("로그인 성공!");
+            // 로그인 성공 시, 세션에 사용자 정보를 저장한다.
+            HttpSession session = request.getSession();
+            LoginUser loginUser = new LoginUser(email);
+            session.setAttribute("loginUser", loginUser);
+            
+            response.sendRedirect("MainPageController");
          }
-      } catch (Exception var9) {
-         var9.printStackTrace();
+      } catch (Exception e) {
+         e.printStackTrace();
       }
-
    }
 }

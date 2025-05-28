@@ -13,7 +13,7 @@
 		<!--왼쪽: 로고 + 텍스트 -->
 		<div class="d-flex align-items-center gap-2">
 			<!-- <a> 태그는 get방식으로 밖에 못보낸다  -->
-			<a href="mainPage.jsp">
+			<a href="/MainPageController">
 				<img src="./resources/images/SKV 로고.png" alt="SKV" style="height: 40px;">
 			</a>
 			<span class="med fs-4">SeoKyeong Video</span>
