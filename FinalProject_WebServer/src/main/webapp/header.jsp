@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="Entity.LoginUser" %>
+<link rel="stylesheet" href="./resources/css/skvstyle.css" />
 <%
     LoginUser loginUser = (LoginUser) session.getAttribute("loginUser");
 %>
@@ -10,7 +11,7 @@
 	    <!-- 왼쪽: 로고 + 텍스트 -->
 	    <div class="d-flex align-items-center gap-2">
 	        <a href="MainPageController">
-	            <img src="./resources/images/SKV 로고.png" alt="SKV" style="height: 40px;">
+	            <img src="./resources/images/로고.png" alt="SKV" style="height: 40px;">
 	        </a>
 	        <span class="med fs-4">SeoKyeong Video</span>
 	    </div>
@@ -35,7 +36,7 @@
 	            <!-- 로그인 후 -->
 	            <li>
 	                <a href="LogoutController" class="med text-decoration-none d-flex flex-column align-items-center">
-	                    <img src="./resources/images/로그아웃.png" alt="로그아웃" style="height: 24px;">
+	                    <img src="./resources/images/로그아웃.svg" alt="로그아웃" style="height: 24px;">
 	                    <span>로그아웃</span>
 	                </a>
 	            </li>
