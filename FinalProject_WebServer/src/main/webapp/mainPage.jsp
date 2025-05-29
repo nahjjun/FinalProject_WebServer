@@ -11,7 +11,6 @@
 <body>
 <%@ include file="header.jsp" %>
 
-<%@ include file="movieChart.jsp" %>
 
 	
 	
