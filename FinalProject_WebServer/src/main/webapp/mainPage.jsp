@@ -10,10 +10,11 @@
 </head>
 <body>
 <%@ include file="header.jsp" %>
-
-
+<%@ include file="menu.jsp" %>
+<%@ include file = "topAdd.jsp" %>
 	
 	
 <%@ include file="footer.jsp" %>
 </body>
-</html>
+<script src="./resources/js/videoControl.js"></script>
+

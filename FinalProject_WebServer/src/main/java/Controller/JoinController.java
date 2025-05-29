@@ -1,5 +1,7 @@
 package Controller;
 
+import java.io.IOException;
+
 import Dto.JoinRequestDto;
 import Service.JoinService;
 import Util.PasswordUtil;
@@ -9,7 +11,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @WebServlet({"/JoinController"})
 public class JoinController extends HttpServlet {
