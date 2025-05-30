@@ -3,6 +3,7 @@ package Controller;
 import java.io.IOException;
 
 import Entity.LoginUser;
+import Util.KoficDBUtil;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +15,8 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/MainPageController")
 public class MainPageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private KoficDBUtil kUtil = new KoficDBUtil();
+	
     public MainPageController() {
         super();
     }
