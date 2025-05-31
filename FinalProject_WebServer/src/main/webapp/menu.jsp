@@ -16,9 +16,10 @@
 	  <div id ="menu" class="d-flex custom-gap">
 		  <ul class = "d-flex gap-4 mb-0">
 		    <li>
-		      <a href="movie.jsp" class="menu-item">영화</a>
+		    <!-- 영화 리스트들이 나열되어있는 페이지 -->
+		      <a href="MovieController?action=movieList" class="menu-item">영화</a>
 		      <ul>
-		        <li><a href="movieChart.jsp">무비차트</a></li>
+		        <li><a href="MovieController?action=movieChart">무비차트</a></li>
 		        <li><a href="#">아트하우스</a></li>
 		      </ul>
 		    </li>

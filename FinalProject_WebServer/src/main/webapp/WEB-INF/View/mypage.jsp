@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="./resources/css/skvstyle.css" />
 </head>
 <body>
-  <%@ include file="header.jsp" %>
-  <%@ include file="menu.jsp" %>
+  <%@ include file="/header.jsp" %>
+  <%@ include file="/menu.jsp" %>
 <div class="mypage-section d-flex justify-content-center gap-5 mt-5">
   
   <!-- 세로 메뉴바 -->
@@ -46,6 +46,6 @@
 </div>
 
 
-<%@ include file="footer.jsp" %>
+<%@ include file="/footer.jsp" %>
 </body>
 </html>
