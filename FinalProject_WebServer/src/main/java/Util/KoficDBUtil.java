@@ -203,13 +203,13 @@ public class KoficDBUtil {
 				if(count == 0) {
 					movieInfo = getMovieInfo((String)movieData.get("movieCd"));
 					String movieNm = (String)movieInfo.get("movieNm");
-					String genreNm = (String)movieInfo.get("genreNm");
+					List<Map<String,String>> genres = (List<Map<String, String>>)movieInfo.get("genres");
 					String showTmStr = (String)movieInfo.get("showTm");
 					Integer showTm = 0;
 							
 					// 영화 이름, 장르, 상영 시간 설정
 					pstmt.setString(1, movieNm);
-					pstmt.setString(2, genreNm);
+					pstmt.setString(2, genres.get(0).get("genreNm"));
 					if(showTmStr !=null && !showTmStr.isEmpty()) { // 상영시간이 데이터에 없는 경우, 해당 데이터에 null값을 넣는 설정을 해줌
 						showTm = Integer.parseInt((String)movieInfo.get("showTm"));
 						pstmt.setInt(3, showTm);						
