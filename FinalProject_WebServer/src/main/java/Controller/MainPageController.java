@@ -19,12 +19,7 @@ public class MainPageController extends HttpServlet {
 	
     public MainPageController() {
         super();
-        try {
-			KoficDBUtil k = new KoficDBUtil();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        
     }
 
 	// 메인 페이지 보내주는 함수
