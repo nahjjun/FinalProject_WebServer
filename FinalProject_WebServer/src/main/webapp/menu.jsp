@@ -3,19 +3,48 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>menu</title>
+<link rel="stylesheet" href="./resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="./resources/css/skvstyle.css" />
 </head>
 <body>
 <!-- 네비게이션 메뉴 바 -->
 <nav class="main-menu d-flex justify-content-between align-items-center px-5 py-3">
 	<!-- 왼쪽: 메뉴 -->
-	  <div class="d-flex custom-gap">
-		  <a href="movie.jsp" class="menu-item">영화</a>
-		  <a href="theater.jsp" class="menu-item">극장</a>
-		  <a href="reservation.jsp" class="menu-item">예매</a>
-		  <a href="community.jsp" class="menu-item">게시판</a>
-	  </div>
+	  <div id ="menu" class="d-flex custom-gap">
+		  <ul class = "d-flex gap-4 mb-0">
+		    <li>
+		      <a href="movie.jsp" class="menu-item">영화</a>
+		      <ul>
+		        <li><a href="movieChart.jsp">무비차트</a></li>
+		        <li><a href="#">아트하우스</a></li>
+		      </ul>
+		    </li>
+		    <li>
+		      <a href="theater.jsp" class="menu-item">극장</a>
+		      <ul>
+		        <li><a href="#">SGV 극장</a></li>
+		      </ul>
+		    </li>
+		    <li>
+		      <a href="reservation.jsp" class="menu-item">예매</a>
+		      <ul>
+		        <li><a href="#">빠른 예매</a></li>
+		        <li><a href="#">상영 스케줄</a></li>
+		      </ul>
+		    </li>
+		    <li>
+		      <a href="community.jsp" class="menu-item">게시판</a>
+		      <ul>
+		        <li><a href="#">자유 게시판</a></li>
+		        <li><a href="#">영화 게시판</a></li>
+		      </ul>
+		    </li>
+		  </ul>
+		</div>
+		
 	  
 	  <!-- 오른쪽: 검색창 -->
 	  <form class="d-flex search-form" action="search.jsp" method="get">

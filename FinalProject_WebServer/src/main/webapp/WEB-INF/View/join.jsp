@@ -8,6 +8,7 @@
 </head>
 <body>
 <%@ include file="/header.jsp" %>
+<%@ include file="/menu.jsp" %>
 		     
 <div class="container d-flex flex-column align-items-center justify-content-center py-5" style="min-height: 100vh;">
 	<!-- 환영 영역 -->

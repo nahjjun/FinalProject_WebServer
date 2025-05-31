@@ -17,4 +17,4 @@
 <%@ include file="footer.jsp" %>
 </body>
 <script src="./resources/js/videoControl.js"></script>
-
+</html>
