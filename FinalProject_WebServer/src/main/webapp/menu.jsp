@@ -26,7 +26,6 @@
 		      <a href="theater.jsp" class="menu-item">극장</a>
 		      <ul>
 		        <li><a href="#">SGV 극장</a></li>
-		        <li><a href="#">아트하우스</a></li>
 		      </ul>
 		    </li>
 		    <li>
