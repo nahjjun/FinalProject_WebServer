@@ -1,0 +1,33 @@
+@import url("skvstyle.css");
+.movie-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.movie-card .rank-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #dc3545; /* Bootstrap danger 색상 */
+  color: white;
+  padding: 4px 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.movie-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.movie-card .card-text {
+  font-size: 0.9rem;
+}
+
+.movie-card .btn {
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.5rem;
+}

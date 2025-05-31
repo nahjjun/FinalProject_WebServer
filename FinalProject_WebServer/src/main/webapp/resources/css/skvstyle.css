@@ -18,24 +18,23 @@
        url("./../font/Pretendard-Bold.woff") format("woff");
 }
 
-
-body {
-  font-family: "Pretendard", sans-serif;
-  font-weight: 400;
-  color : var(--main-black);
-  line-height: 1.6;
-}
-
-
 /* 변수 선언 */
 :root {
+  --font-default: "Pretendard", sans-serif;
   --main-green: #309A33;
   --main-green-dark: #267a29;
   --gray-light: #f5f5f5;
   --text-dark: #333;
   --main-black:#1A1A1A;
-  
 }
+
+body {
+   font-family: var(--font-default);
+  font-weight: 400;
+  color : var(--main-black);
+  line-height: 1.6;
+}
+
 /*헤더*/
 .header {
    background: #FFF;
@@ -49,7 +48,7 @@ body {
 .main-menu {
   background-color: white;
   position: relative; /* ::after 절대 위치 기준 */
-  z-index: 1s;
+  z-index: 1;
   padding-left: 1rem;
 }
 .custom-gap {
@@ -201,4 +200,178 @@ body {
 .sgv-banner-text a:hover,
 .sgv-banner-text button:hover {
   background-color: #f0f0f0;
+}
+
+/* 상위 메뉴 (수평 배치) */
+#menu > ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1.3rem;
+  align-items: center;
+}
+
+/* 상위 메뉴 li */
+#menu > ul > li {
+  position: relative;
+}
+
+/* 드롭다운 메뉴 (하위 ul) */
+#menu > ul > li > ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  min-width: 160px;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 드롭다운 메뉴 항목 */
+#menu > ul > li > ul > li > a {
+  padding: 10px 15px;
+  white-space: nowrap;
+  display: block;
+  color: var(--main-black);
+  text-decoration: none;
+}
+
+/* 드롭다운 hover */
+#menu > ul > li:hover > ul {
+  display: block;
+}
+
+/* 메뉴 hover 효과 */
+#menu a:hover {
+  background-color: var(--gray-light);
+}
+
+/*------마이페이지------------*/
+.mypage-sidebar {
+  width: 200px;
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid #d5f0a0;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  height: fit-content;
+   min-height: 400px;
+}
+
+.menu-category {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--main-black);
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.submenu-item {
+  margin-left: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.submenu-item a {
+  color: var(--main-black);
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.submenu-item a:hover {
+  color: var(--main-green);
+  text-decoration: underline;
+}
+
+
+
+/* 마이페이지 박스 */
+.mypage-profile-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;  /* 상단에서 아래로 내리기 */
+}
+
+.mypage-profile-box {
+  max-width: 1245px;
+  width: 100%;
+  height: 440px;
+  padding: 3rem 4rem;
+  border-radius: 30px;
+  border: 2px solid #A6FF00;
+  background-color: #F8FFEB;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.29);
+
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+/* 프로필 이미지 크게 + 세로 정렬 */
+.mypage-profile-img {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 2px solid #b3f000;
+  object-fit: cover;
+}
+
+/* 정보 영역 */
+.mypage-info-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+/* 이름/아이디 */
+.mypage-info-area h4 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.mypage-info-area .user-id {
+  font-size: 1.5rem;
+  color: var(--main-green);
+}
+
+/* 등급 설명 */
+.mypage-info-area .membership-grade {
+  font-size: 1.4rem;
+}
+
+/* SGV 문구 */
+.mypage-info-area .sgv-label {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 0.4rem
+}
+
+/* SGV 버튼 */
+.mypage-info-area .sgv-buttons {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* SGV 버튼 자체 커스터마이징 */
+.sgv-buttons .btn {
+  font-size: 1.1rem;     /* 글자 크기 업 */
+  padding: 0.75rem 1.25rem;  /* 버튼 더 크고 넉넉하게 */
+  border-radius: 0.6rem;
 }

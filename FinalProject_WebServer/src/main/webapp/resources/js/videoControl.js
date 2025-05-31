@@ -1,5 +1,5 @@
 function togglePlay() {
-  const video = document.querySelector(".sgv-video"); // ← 너가 쓰는 클래스 기준
+  const video = document.querySelector(".sgv-video"); 
   const btn = document.getElementById("playBtn");
 
   if (video.paused) {

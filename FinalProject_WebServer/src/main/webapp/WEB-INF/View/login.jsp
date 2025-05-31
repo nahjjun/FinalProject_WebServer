@@ -8,11 +8,12 @@
 </head>
 <body>
 <%@ include file="/header.jsp" %>
+<%@ include file="/menu.jsp" %>
 
 
 <div class="container d-flex flex-column align-items-center justify-content-center" style="min-height: 100vh;">
 	<!-- 🔽 로고 이미지 -->
-	<img src="./resources/images/SKV 로고.png" alt="SKV 로고" class="img-fluid" style="max-width: 180px; margin-bottom: 20px;">
+	<img src="./resources/images/로고.png" alt="SKV 로고" class="img-fluid" style="max-width: 180px; margin-bottom: 20px;">
 
 	<!-- 🔽 로그인 폼 카드 -->
 	<div class="card shadow-sm border-0" style="width: 100%; max-width: 400px;">
