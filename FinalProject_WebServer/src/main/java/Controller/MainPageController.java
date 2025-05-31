@@ -15,10 +15,16 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/MainPageController")
 public class MainPageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private KoficDBUtil kUtil = new KoficDBUtil();
+	
 	
     public MainPageController() {
         super();
+        try {
+			KoficDBUtil k = new KoficDBUtil();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 	// 메인 페이지 보내주는 함수

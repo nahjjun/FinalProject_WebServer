@@ -7,16 +7,20 @@ public class Movie {
 	private String description;
 	private String poster_url;
 	private float review_point;
-	private int movie_rank;
 	
-	public Movie(String title, String genre, String duration, String description, String poster_url, float review_point, int movie_rank) {
+	public Movie(String title, String genre, String duration, String description, String poster_url, float review_point) {
 		this.title = title;
 		this.genre = genre;
 		this.duration = duration;
 		this.description = description;
 		this.poster_url = poster_url;
 		this.review_point = review_point;
-		this.movie_rank = movie_rank;
+	}
+	
+	public Movie(String title, String genre, String duration) {
+		this.title = title;
+		this.genre = genre;
+		this.duration = duration;
 	}
 
 	public String getTitle() {
@@ -66,15 +70,6 @@ public class Movie {
 	public void setReview_point(float review_point) {
 		this.review_point = review_point;
 	}
-
-	public int getMovie_rank() {
-		return movie_rank;
-	}
-
-	public void setMovie_rank(int movie_rank) {
-		this.movie_rank = movie_rank;
-	}
-	
 	
 
 }

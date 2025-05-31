@@ -1,9 +1,19 @@
 package Util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URI;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,15 +32,23 @@ public class KoficDBUtil {
 //	private String WideAreaCd; // 상영지역별로 조회할 수 있으며, 지역코드는 공통코드 조회 서비스에서 "0105000000"로서 조회된 지역코드입니다. (default: 전체)
 //		
 	
-	public KoficDBUtil() {
-		updateDailyBoxOfficeDB();
+	public KoficDBUtil() throws IOException {
+		updateMoviesDB();
 	}
 	
 	// 일정 기간마다 내 DB서버의 DailyBoxOffice 테이블의 데이터들을 kofic api의 데이터를 이용하여 업데이트 해주는 함수
 	public static void updateDailyBoxOfficeDB() {
+		// 현재 날짜 구하기
+		LocalDate now = LocalDate.now();
+		// 포맷 정의
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		// 현재 날짜에 포맷 적용
+		String formatedNow = now.format(formatter);
+		
+		
 		// 현재 시간/날짜를 입력받아서 날짜별 순위를 확인해야한다.
 		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("targetDt", "20250528");
+		paramMap.put("targetDt", formatedNow);
 		
 		try {
 			// 오픈 API 클라이언트 객체를 발급받은 key로 생성
@@ -83,19 +101,18 @@ public class KoficDBUtil {
 				pstmt.setString(1, (String)dailyBoxOffice.get("movieNm"));
 				pstmt.setString(2, (String)dailyBoxOffice.get("rank"));
 				String openDt = (String) dailyBoxOffice.get("openDt");
-				if(openDt == null || openDt.trim().isEmpty() || openDt.equals(" ")) {
-					pstmt.setNull(3, java.sql.Types.DATE); // null값을 저장
+				if (openDt.matches("\\d{4}-\\d{2}-\\d{2}")) {
+				    // 이미 yyyy-MM-dd 형식이면 바로 저장
+				    pstmt.setDate(3, java.sql.Date.valueOf(openDt));
+				} else if (openDt.matches("\\d{8}")) {
+				    // yyyyMMdd → yyyy-MM-dd로 변환
+				    String formattedDate = openDt.substring(0, 4) + "-" + openDt.substring(4, 6) + "-" + openDt.substring(6);
+				    pstmt.setDate(3, java.sql.Date.valueOf(formattedDate));
 				} else {
-					// openDt가 yyyyMMdd면 yyyy-MM-dd로 변환 (MySQL DATE 타입은 하이픈 포함해야 안전)
-				    if (openDt.matches("\\d{8}")) {
-				        // ex: 20250528 → 2025-05-28
-				        String formattedDate = openDt.substring(0, 4) + "-" + openDt.substring(4, 6) + "-" + openDt.substring(6);
-				        pstmt.setDate(3, java.sql.Date.valueOf(formattedDate));
-				    } else {
-				        System.out.println("잘못된 날짜 형식: " + openDt);
-				        pstmt.setNull(3, java.sql.Types.DATE); // 형식 이상하면 NULL로
-				    }
+				    System.out.println("잘못된 날짜 형식: " + openDt);
+				    pstmt.setNull(3, java.sql.Types.DATE);
 				}
+
 				pstmt.executeUpdate();
 			}
 			
@@ -107,12 +124,172 @@ public class KoficDBUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 
-	// DB의 Movie 테이블의 모든 데이터들을 업데이트 해주는 함수 
-	public void updateAllMoviesDB() {
+	// DB의 Movie 테이블의 데이터들을 업데이트 해주는 함수 (100개의 영화 정보를 가져와서 기존 데베에 없던 영화가 있으면 추가해준다)
+	public void updateMoviesDB() throws IOException {
+		// 1. API URL 구성
+		// http url 직접 호출 방식으로 searchMovieList를 사용해야함
+		String apiUrl = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json"
+		           + "?key=" + key
+		           + "&curPage=2"
+		           + "&itemPerPage=100";
 		
+
+		// 2. HTTP 연결 설정 및 요청
+		// HttpURLConnection 객체를 생성하고 GET 방식으로 요청 보냄
+		try {
+			URI uri = URI.create(apiUrl); // 문자열 -> URI
+			URL url = uri.toURL(); // URI -> URL
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			
+			// 3. 응답 처리
+			// 응답 코드가 200~300이면 정상이다 -> InputStream에서 응답 본문을 읽는다.
+			BufferedReader rd;
+			if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+			    rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			} else {
+			    rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+			}
+			
+			// 4. 응답 json 문자열로 읽기
+			// 응답을 한줄씩 읽어서 StringBuilder로 합친다 (최종 json 문자열 완성하는 것)
+			StringBuilder sb = new StringBuilder();
+			String line;
+			while ((line = rd.readLine()) != null) {
+			    sb.append(line);
+			}
+			rd.close();
+			conn.disconnect();
+
+			// 5. json 파싱
+			// ObjectMapper 사용
+			// ObjectMapper로 json 형태에 저장되어있는 영화 정보 리스트 가져옴
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> result = mapper.readValue(sb.toString(), Map.class);
+			Map<String, Object> movieListResult = (Map<String, Object>)result.get("movieListResult");
+			List<Map<String, Object>> movieList = (List<Map<String, Object>>) movieListResult.get("movieList");
+			
+			
+			// 6. 영화 정보 중 "이름, 장르, 상영시간" DB에 넣어주면서 반복 처리
+			// ! 상영시간 불러올 수 없음
+			Connection con = DBUtil.getConnection();
+			
+			// 해당 영화 데이터가 현재 Movie Table에 존재하는지 확인하기 위한 sql문 
+			String checkSql = "SELECT COUNT(*) FROM Movie WHERE title = ?";
+			PreparedStatement checkStmt = con.prepareStatement(checkSql);
+			ResultSet rs;
+			
+			
+			// 해당 영화 데이터를 Movie Table에 넣기 위한 sql문
+			String sql = "INSERT INTO `Movie`(title, genre, duration) VALUES (?, ?, ?)";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			
+			Map<String, Object> movieData=null, movieInfo=null;
+			for(int i=0; i<movieList.size(); ++i) {
+				// 해당 영화의 데이터를 가져옴
+				movieData = movieList.get(i);
+				String title = (String)movieData.get("movieNm");
+				
+				// 1) 해당 영화가 현재 Movie table에 있는지 title로 확인한다.
+				checkStmt.setString(1, title);
+				rs = checkStmt.executeQuery();
+				int count=0;
+				if(rs.next()) count = rs.getInt(1);
+				
+				// 2-1) 해당 영화가 현재 Movie table에 없는 경우, searchMovieInfo()를 활용해서 해당 영화의 세부정보를 가져와 table에 저장한다.
+				if(count == 0) {
+					movieInfo = getMovieInfo((String)movieData.get("movieCd"));
+					String movieNm = (String)movieInfo.get("movieNm");
+					String genreNm = (String)movieInfo.get("genreNm");
+					String showTmStr = (String)movieInfo.get("showTm");
+					Integer showTm = 0;
+							
+					// 영화 이름, 장르, 상영 시간 설정
+					pstmt.setString(1, movieNm);
+					pstmt.setString(2, genreNm);
+					if(showTmStr !=null && !showTmStr.isEmpty()) { // 상영시간이 데이터에 없는 경우, 해당 데이터에 null값을 넣는 설정을 해줌
+						showTm = Integer.parseInt((String)movieInfo.get("showTm"));
+						pstmt.setInt(3, showTm);						
+					} else {
+						pstmt.setNull(3, java.sql.Types.INTEGER);
+					}
+					
+					pstmt.executeUpdate();
+				} 
+				else { // 2-2) 해당 영화가 현재 Movie table에 없는 경우, table에 추가하지 않고 넘긴다.
+					System.out.println("KoficDBUtil/updateMoviesDB() 이미 존재하는 영화입니다: " + title);
+					continue;
+				}
+				
+			}
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	// 건네받은 영화 코드로 해당 영화의 상세정보를 불러오는 코드.
+	private Map<String, Object> getMovieInfo(String movieCd){
+		// 1. API URL 구성
+		// http url 직접 호출 방식으로 searchMovieInfo를 사용해야함
+		String apiUrl = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json"
+		           + "?key=" + key
+		           + "&movieCd="+movieCd;
+		
+
+		// 2. HTTP 연결 설정 및 요청
+		// HttpURLConnection 객체를 생성하고 GET 방식으로 요청 보냄
+		try {
+			URI uri = URI.create(apiUrl); // 문자열 -> URI
+			URL url = uri.toURL(); // URI -> URL
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			
+			// 3. 응답 처리
+			// 응답 코드가 200~300이면 정상이다 -> InputStream에서 응답 본문을 읽는다.
+			BufferedReader rd;
+			if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+			    rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			} else {
+			    rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+			}
+			
+			// 4. 응답 json 문자열로 읽기
+			// 응답을 한줄씩 읽어서 StringBuilder로 합친다 (최종 json 문자열 완성하는 것)
+			StringBuilder sb = new StringBuilder();
+			String line;
+			while ((line = rd.readLine()) != null) {
+			    sb.append(line);
+			}
+			rd.close();
+			conn.disconnect();
+
+			// 5. json 파싱
+			// ObjectMapper 사용
+			// ObjectMapper로 json 형태에 저장되어있는 영화 정보 리스트 가져옴
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> result = mapper.readValue(sb.toString(), Map.class);
+			Map<String, Object> movieInfoResult = (Map<String, Object>)result.get("movieInfoResult");
+			Map<String, Object> movieInfo = (Map<String, Object>) movieInfoResult.get("movieInfo");
+			return movieInfo;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return null;
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
