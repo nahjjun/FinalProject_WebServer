@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
 import kr.or.kobis.kobisopenapi.consumer.rest.exception.OpenAPIFault;
 
-public class KoficDBUtil {
+public class KoficAPIUtil {
 	// kofic의 api key
 	private static final String key = "4efdb259b1c88d86ae23dac5306f08a5"; 
 // private String targetDt;  // 조회하고자 하는 날짜. (양식 : yyyymmdd)
@@ -32,12 +32,12 @@ public class KoficDBUtil {
 //	private String WideAreaCd; // 상영지역별로 조회할 수 있으며, 지역코드는 공통코드 조회 서비스에서 "0105000000"로서 조회된 지역코드입니다. (default: 전체)
 //		
 	
-	public KoficDBUtil() throws IOException {
-		updateDailyBoxOfficeDB();
+	public KoficAPIUtil() throws IOException {
+		
 	}
 	
-	// 일정 기간마다 내 DB서버의 DailyBoxOffice 테이블의 데이터들을 kofic api의 데이터를 이용하여 업데이트 해주는 함수
-	public static void updateDailyBoxOfficeDB() {
+
+	public static List<HashMap<String, Object>> getDailyBoxOfficeList() {
 		// 현재 날짜 구하기
 		LocalDate now = LocalDate.now().minusDays(1);
 		// 포맷 정의
@@ -64,116 +64,31 @@ public class KoficDBUtil {
 
 			// json 방식으로 데이터를 불러온다
 			String jsonResponse = kobisRS.getDailyBoxOffice(true, paramMap);
-			System.out.println("getDailyBoxOffice 성공");
 			
 			// ObjectMapper 객체를 사용해서 json 방식의 데이터를 handling한다.
 			ObjectMapper mapper = new ObjectMapper();
 			HashMap<String, Object> dailyResult = mapper.readValue(jsonResponse, HashMap.class);
-			System.out.println("mapper로 json 읽기 성공");
 			
 			// boxOfficeResult 내부에서 리스트 추출
 			Map<String, Object> boxOfficeResult = (Map<String, Object>) dailyResult.get("boxOfficeResult");
 			if (boxOfficeResult == null) {
 			    System.out.println("boxOfficeResult가 응답에 없습니다.");
-			    return;
+			    return null;
 			}
 			
 			// json 데이터 중 "dailyBoxOfficeList" 에 저장되어있는 영화들을 리스트로 가져온다.
 			List<HashMap<String, Object>> dailyBoxOfficeList = (List<HashMap<String, Object>>)boxOfficeResult.get("dailyBoxOfficeList");
-			if (dailyBoxOfficeList == null) {
-			    System.out.println("KOBIS 응답에 dailyBoxOfficeList가 존재하지 않습니다.");
-			    return; // 혹은 에러 처리
-			}
 			
-			// DB에 연동하여 DailyBoxOffice 테이블을 업데이트 해준다.
-			Connection con = DBUtil.getConnection();
-			// 우선 기존 하루 박스오피스 내용을 전부 삭제한다.
-			String sql = "delete from DailyBoxOffice";
-			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.executeUpdate();
-			
-			// 새롭게 해당 테이블에 불러온 박스오피스 데이터들을 저장한다. 
-			sql = "INSERT INTO `DailyBoxOffice`(movie_title, movie_rank, target_date) VALUES(?,?,?)";
-			pstmt = con.prepareStatement(sql);
-			
-			// DailyBoxOffice 테이블 저장 직후, Movie 테이블 업데이트를 위한 준비
-			String checkSql = "SELECT COUNT(*) FROM Movie WHERE title = ?";
-			PreparedStatement checkStmt = con.prepareStatement(checkSql);
-
-			String insertSql = "INSERT INTO `Movie`(title, genre, duration) VALUES (?, ?, ?)";
-			PreparedStatement insertStmt = con.prepareStatement(insertSql);
-			
-			for(int i=0; i<dailyBoxOfficeList.size(); ++i) {
-				HashMap<String, Object> dailyBoxOffice = dailyBoxOfficeList.get(i);
+			return dailyBoxOfficeList;
 				
-				pstmt.setString(1, (String)dailyBoxOffice.get("movieNm"));
-				pstmt.setString(2, (String)dailyBoxOffice.get("rank"));
-				String openDt = (String) dailyBoxOffice.get("openDt");
-				if (openDt.matches("\\d{4}-\\d{2}-\\d{2}")) {
-				    // 이미 yyyy-MM-dd 형식이면 바로 저장
-				    pstmt.setDate(3, java.sql.Date.valueOf(openDt));
-				} else if (openDt.matches("\\d{8}")) {
-				    // yyyyMMdd → yyyy-MM-dd로 변환
-				    String formattedDate = openDt.substring(0, 4) + "-" + openDt.substring(4, 6) + "-" + openDt.substring(6);
-				    pstmt.setDate(3, java.sql.Date.valueOf(formattedDate));
-				} else {
-				    System.out.println("잘못된 날짜 형식: " + openDt);
-				    pstmt.setNull(3, java.sql.Types.DATE);
-				}
-
-				pstmt.executeUpdate();
-				
-				 // Movie 테이블 중복 확인 후 없으면 추가
-			    String movieTitle = (String) dailyBoxOffice.get("movieNm");
-			    checkStmt.setString(1, movieTitle);
-			    ResultSet rs = checkStmt.executeQuery();
-			    int count = 0;
-			    if (rs.next()) count++;
-			    
-			    if (count == 0) {
-			        // 영화 코드로 상세정보를 가져오기 위해서는 movieCd 필요
-			        String movieCd = (String) dailyBoxOffice.get("movieCd");
-			        if (movieCd == null || movieCd.isEmpty()) {
-			            System.out.println("movieCd 없음 → " + dailyBoxOffice.get("movieNm"));
-			            continue;
-			        }
-			        Map<String, Object> movieInfo = getMovieInfo(movieCd);
-			        if (movieInfo == null) {
-			            System.out.println("movieInfo 조회 실패 → " + movieCd);
-			            continue;
-			        }
-			        if (movieInfo != null) {
-			            String movieNm = (String) movieInfo.get("movieNm");
-			            List<Map<String, String>> genres = (List<Map<String, String>>) movieInfo.get("genres");
-			            String showTmStr = (String) movieInfo.get("showTm");
-
-			            insertStmt.setString(1, movieNm);
-			            insertStmt.setString(2, genres.isEmpty() ? null : genres.get(0).get("genreNm"));
-			            if (showTmStr != null && !showTmStr.isEmpty()) {
-			                insertStmt.setInt(3, Integer.parseInt(showTmStr));
-			            } else {
-			                insertStmt.setNull(3, java.sql.Types.INTEGER);
-			            }
-
-			            insertStmt.executeUpdate();
-			            System.out.println("Movie 테이블에 추가된 영화: " + movieNm);
-			        }
-			    }
-			}
-			
-			System.out.println("KoficDBUtil/updateDailyBoxOfficeDB()를 성공적으로 수행했습니다.");
-		} catch (OpenAPIFault e) {
-			// TODO Auto-generated catch block
+		}catch (Exception e) {
 			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		}
 	}
-	
 
-	// DB의 Movie 테이블의 데이터들을 업데이트 해주는 함수 (100개의 영화 정보를 가져와서 기존 데베에 없던 영화가 있으면 추가해준다)
-	public static void updateMoviesDB() throws IOException {
+	
+	public static List<Map<String, Object>> getMovieInfoList() {
 		// 1. API URL 구성
 		// http url 직접 호출 방식으로 searchMovieList를 사용해야함
 		String apiUrl = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json"
@@ -217,73 +132,17 @@ public class KoficDBUtil {
 			Map<String, Object> movieListResult = (Map<String, Object>)result.get("movieListResult");
 			List<Map<String, Object>> movieList = (List<Map<String, Object>>) movieListResult.get("movieList");
 			
-			
-			// 6. 영화 정보 중 "이름, 장르, 상영시간" DB에 넣어주면서 반복 처리
-			// ! 상영시간 불러올 수 없음
-			Connection con = DBUtil.getConnection();
-			
-			// 해당 영화 데이터가 현재 Movie Table에 존재하는지 확인하기 위한 sql문 
-			String checkSql = "SELECT COUNT(*) FROM Movie WHERE title = ?";
-			PreparedStatement checkStmt = con.prepareStatement(checkSql);
-			ResultSet rs;
-			
-			
-			// 해당 영화 데이터를 Movie Table에 넣기 위한 sql문
-			String sql = "INSERT INTO `Movie`(title, genre, duration) VALUES (?, ?, ?)";
-			PreparedStatement pstmt = con.prepareStatement(sql);
-			
-			Map<String, Object> movieData=null, movieInfo=null;
-			for(int i=0; i<movieList.size(); ++i) {
-				// 해당 영화의 데이터를 가져옴
-				movieData = movieList.get(i);
-				String title = (String)movieData.get("movieNm");
-				
-				// 1) 해당 영화가 현재 Movie table에 있는지 title로 확인한다.
-				checkStmt.setString(1, title);
-				rs = checkStmt.executeQuery();
-				int count=0;
-				if(rs.next()) count = rs.getInt(1);
-				
-				// 2-1) 해당 영화가 현재 Movie table에 없는 경우, searchMovieInfo()를 활용해서 해당 영화의 세부정보를 가져와 table에 저장한다.
-				if(count == 0) {
-					movieInfo = getMovieInfo((String)movieData.get("movieCd"));
-					String movieNm = (String)movieInfo.get("movieNm");
-					List<Map<String,String>> genres = (List<Map<String, String>>)movieInfo.get("genres");
-					String showTmStr = (String)movieInfo.get("showTm");
-					Integer showTm = 0;
-							
-					// 영화 이름, 장르, 상영 시간 설정
-					pstmt.setString(1, movieNm);
-					pstmt.setString(2, genres.get(0).get("genreNm"));
-					if(showTmStr !=null && !showTmStr.isEmpty()) { // 상영시간이 데이터에 없는 경우, 해당 데이터에 null값을 넣는 설정을 해줌
-						showTm = Integer.parseInt((String)movieInfo.get("showTm"));
-						pstmt.setInt(3, showTm);						
-					} else {
-						pstmt.setNull(3, java.sql.Types.INTEGER);
-					}
-					
-					pstmt.executeUpdate();
-				} 
-				else { // 2-2) 해당 영화가 현재 Movie table에 없는 경우, table에 추가하지 않고 넘긴다.
-					System.out.println("KoficDBUtil/updateMoviesDB() 이미 존재하는 영화입니다: " + title);
-					continue;
-				}
-				
-			}
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			return movieList;
+		}catch(Exception e) {
 			e.printStackTrace();
-		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+			return null;
 		}
-		
 	}
 	
+	
+	
 	// 건네받은 영화 코드로 해당 영화의 상세정보를 불러오는 코드.
-	private static Map<String, Object> getMovieInfo(String movieCd){
+	public static Map<String, Object> getMovieInfo(String movieCd){
 		// 1. API URL 구성
 		// http url 직접 호출 방식으로 searchMovieInfo를 사용해야함
 		String apiUrl = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json"

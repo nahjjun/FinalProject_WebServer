@@ -32,12 +32,12 @@
 	    <div class="col">
 	      <div class="card h-100 shadow-sm movie-card">
 	        <div class="position-relative">
-	          <span class="rank-badge">No."${movie.get('rank')}"</span>
+	          <span class="rank-badge">No.${movie.get('rank')}</span>
 	          <img src="${movie.get('poster_url')}" class="card-img-top" alt="영화포스터">
 	        </div>
 	        <div class="card-body">
 	          <h5 class="card-title">${movie.get("title")}</h5>
-	          <p class="card-text">예매율: 23.9% · 관람평: 97%</p>
+	          <p class="card-text">관람평: ${review_point}</p>
 	          <p class="card-text text-muted">개봉일: ${movie.get("date")}</p>
 	          <a href="#" class="btn btn-outline-danger w-100">예매하기</a>
 	          <a href="MovieController?action=movieDetail" class="btn btn-outline-danger w-100">상세정보</a>

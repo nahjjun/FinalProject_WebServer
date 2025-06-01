@@ -60,7 +60,7 @@ public class MovieRepository {
 	// 영화 박스오피스 리스트를 가져오는 함수
 	public List<Map<String, Object>> getBoxOfficeList(){
 		// 두 테이블을 조인하여 포스터 url 정보까지 가져온다.
-		String sql = "SELECT d.movie_title, d.movie_rank, d.target_date, m.poster_url "
+		String sql = "SELECT d.movie_title, d.movie_rank, d.target_date, m.poster_url, m.review_point "
 				+ "FROM DailyBoxOffice d "
 				+ "JOIN Movie m "
 				+ "ON d.movie_title=m.title";
@@ -87,13 +87,15 @@ public class MovieRepository {
 				}
 				
 				String poster_url = rs.getString("poster_url");
-		        
+		        int review_point = rs.getInt("review_point");
+				
 				Map<String, Object> map = new HashMap<String, Object>();
 				
 				map.put("title", title);
 				map.put("date", date);
 				map.put("rank", rank);
 				map.put("poster_url", poster_url);
+				map.put("review_point", review_point);
 				result.add(map);
 			}
 			
