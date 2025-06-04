@@ -17,6 +17,10 @@ public class PasswordUtil {
    }
 
    public static int effectivenessConfirm(String email, String password, String name, String birth) {
+
+	   // 2. 비밀번호 제약조건
+	   // 영문자(대소문자) 최소 1개 이상 / 숫자 1개 이상 포함 / 특수문자 중 하나 포함 / 전체 길이 8자 이상
+	   
       if (!email.equals("") && !password.equals("") && !name.equals("") && !birth.equals("")) {
          if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
             return 1;

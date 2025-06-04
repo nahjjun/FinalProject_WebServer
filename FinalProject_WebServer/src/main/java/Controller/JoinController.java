@@ -48,7 +48,7 @@ public class JoinController extends HttpServlet {
             break;
          case 2:
             page = "/WEB-INF/View/join.jsp";
-            errorString = "비밀번호는 영문,숫자,특수문자를 포함해야합니다!";
+            errorString = "비밀번호의 형식이 틀렸습니다!";
             break;
          case 3:
             page = "/WEB-INF/View/join.jsp";

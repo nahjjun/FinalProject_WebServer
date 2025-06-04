@@ -1,0 +1,266 @@
+@charset "UTF-8";
+@import url("skvstyle.css");
+
+
+/*----- 영화 정보 박스 -------*/
+.movie_info {
+  max-width: 1000px;
+  margin: 3rem auto;
+  padding: 2rem;
+  display: flex;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: relative;
+  gap: 2rem;
+}
+
+.movie_poster {
+  width: 250px;
+  height: 360px;
+  background-color: #ddd;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.info_box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.info_box p:first-child {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.info_box p {
+  margin: 0.3rem 0;
+}
+
+.movie_info .btn-primary {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: #c0ff00;
+  border: none;
+  color: black;
+  font-weight: bold;
+  padding: 0.6rem 1.4rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.movie_info .btn-primary:hover {
+  background-color: #a2e200;
+}
+
+
+/* ------- 영화 설명 ---------- */
+.movie_Description {
+  max-width: 1000px;
+  margin: 2rem auto;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--main-black);
+  padding: 0 1rem;
+}
+
+
+/* ---------- 영화 리뷰 ---------- */
+.movie_review {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.review_title {
+  background-color: #c0ff00;
+  font-weight: bold;
+  padding: 0.8rem 1.2rem;
+  display: inline-block;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  color: black;
+}
+
+
+/* ------- 리뷰 작성 박스 --------- */
+.review_write {
+  background-color: #fdfdfd;
+  padding: 1.5rem;
+  border: 1px solid #C0FF00;
+  border-top: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: var(--font-default);
+}
+
+/* 상단 유저정보 */
+.review_write_top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user_badge {
+  background-color: #C0FF00;
+  color: black;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 16px;
+  font-size: 0.9rem;
+}
+
+.review_placeholder {
+  font-size: 0.95rem;
+  color: var(--main-black);
+}
+
+/* 텍스트 입력 영역 */
+.review_textarea textarea {
+  width: 100%;
+  height: 100px;
+  padding: 0.8rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  resize: none;
+}
+
+/* 글자 수 & 별점 */
+.review_info_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review_char_count {
+  font-size: 0.85rem;
+  color: #7a7a7a;
+}
+
+/* 별점 주기 */
+.review_rating_box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rating_label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #444;
+}
+
+.rating_stars span {
+  font-size: 1.2rem;
+  color: #999;
+  cursor: pointer;
+  padding: 0 0.2rem;
+}
+
+.rating_stars span:hover{
+  color: gold;
+}
+
+/* 등록 버튼 */
+.review_submit_area {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.review_submit_btn {
+  background-color: #eef2ff;
+  border: none;
+  color: #1a1a1a;
+  font-weight: bold;
+  padding: 0.5rem 1.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.review_submit_btn:hover {
+  background-color: #dce5ff;
+}
+
+
+/*---------- 리뷰카드 ------------*/
+.review_card {
+  background-color: #f9f9f9;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+  border: 1px solid #C0FF00;
+}
+
+/* 리뷰 카드 안에들어가는 요소들의 묶음 */
+.review_meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+  color: var(--main-black);
+}
+
+/* 리뷰 사용자 등급 표시 */
+.review_badge {
+  background-color: #C0FF00;
+  padding: 0.2rem 0.7rem;
+  border-radius: 14px;
+  font-size: 0.8rem;
+  color: black;
+}
+/* 리뷰 사용자  */
+.review_user {
+  font-size: 1rem;
+}
+/* 리뷰 적은 날짜/시간 */
+.review_date {
+  font-size: 0.8rem;
+  color: #888;
+  margin-left: auto;
+}
+/* 사용자가 설정한 리뷰 */
+.review_rating {
+  font-size: 0.95rem;
+  color: #FFA500;
+}
+/* 사용자가 적은 리뷰 글 */ 
+.review_content {
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.6;
+  margin-top: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+/* 좋아요/싫어요 감싼 div */
+.review_action {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+/* 좋아요, 싫어요 hover 효과 */
+.like_btn,
+.dislike_btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.like_btn:hover,
+.dislike_btn:hover {
+  color: #111;
+}
+
