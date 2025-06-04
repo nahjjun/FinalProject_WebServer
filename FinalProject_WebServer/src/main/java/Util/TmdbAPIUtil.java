@@ -16,7 +16,7 @@ public class TmdbAPIUtil {
 	private static final String key = "a4cfd32a5821bb727735fc136a1e6637";
 	// 이 requestString에 query, language등의 속성을 넣어서 사용하면 됨
 	private static final String requestString = "https://api.themoviedb.org/3/search/movie";
-	private static final String basicImageUrl = "https://image.tmdb.org/t/p/w200";
+	private static final String basicImageUrl = "https://image.tmdb.org/t/p/w500";
 	
 	public TmdbAPIUtil() {
 		// TODO Auto-generated constructor stub
