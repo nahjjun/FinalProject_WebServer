@@ -92,7 +92,6 @@ body {
 }
 
 
-
 .title-style{
 	font-weight: 700;
 	color : var(--main-green);
@@ -376,3 +375,107 @@ body {
   padding: 0.75rem 1.25rem;  /* 버튼 더 크고 넉넉하게 */
   border-radius: 0.6rem;
 }
+
+/*----무비차트꾸미기---*/
+
+.movie-card .btn {
+  background-color: transparent;
+  border: 2px solid;
+  border-image: linear-gradient(180deg, #A6FF00 0%, #01A900 100%);
+  border-image-slice: 1;
+  color: var(--main-green);  /* 글자색은 메인초록 */
+  font-weight: 600;
+  border-radius: 12px;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+/* 호버 시 채워지는 버튼 */
+.movie-card .btn:hover {
+  background: rgba(166, 255, 0, 0.05); /* 살짝 연한 배경 */
+  color: var(--main-green-dark);
+  transform: translateY(-1px);
+}
+
+.movie-slider-wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 1rem 0;
+}
+
+.movie-slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1.5rem;
+  padding: 0 2rem;
+}
+
+.movie-card-horizontal {
+  flex: 0 0 auto;
+  width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 1rem;
+  background-color: white;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.movie-card-horizontal:hover {
+  transform: translateY(-4px);
+}
+
+.movie-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.movie-card-horizontal .btn {
+  display: block;
+  width: 100%;
+  padding: 0.4rem 0;
+  margin-top: 0.5rem;
+  background-color: transparent;
+  border: 2px solid;
+  border-image: linear-gradient(180deg, #A6FF00 0%, #01A900 100%);
+  border-image-slice: 1;
+  color: var(--main-green);
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.movie-card-horizontal .btn:hover {
+  background-color: rgba(166, 255, 0, 0.05);
+  color: var(--main-green-dark);
+}
+
+/* 화살표 버튼 */
+.scroll-btn {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
+
+.scroll-btn.left {
+  left: 0;
+}
+
+.scroll-btn.right {
+  right: 0;
+}
+

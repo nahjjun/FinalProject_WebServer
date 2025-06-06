@@ -20,7 +20,6 @@
 		      <a href="MovieController?action=movieList" class="menu-item">영화</a>
 		      <ul>
 		        <li><a href="MovieController?action=movieChart">무비차트</a></li>
-		        <li><a href="#">아트하우스</a></li>
 		      </ul>
 		    </li>
 		    <li>
@@ -32,7 +31,7 @@
 		    <li>
 		      <a href="reservation.jsp" class="menu-item">예매</a>
 		      <ul>
-		        <li><a href="#">빠른 예매</a></li>
+		        <li><a href="#">예매하기</a></li>
 		        <li><a href="#">상영 스케줄</a></li>
 		      </ul>
 		    </li>

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DBUtil {
-   private static String url = "jdbc:mysql://43.201.14.191:3306/webserver?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
+   private static String url = "jdbc:mysql://13.209.7.8:3306/webserver?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
    private static String id = "webuser";
    private static String password = "webuser123!";
    private static String driver = "com.mysql.cj.jdbc.Driver";

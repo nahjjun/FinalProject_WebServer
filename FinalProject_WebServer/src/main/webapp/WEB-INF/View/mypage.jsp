@@ -7,6 +7,7 @@
   <title>마이페이지</title>
   <link rel="stylesheet" href="./resources/css/bootstrap.min.css" />
   <link rel="stylesheet" href="./resources/css/skvstyle.css" />
+  <link rel="stylesheet" href="./resources/css/modal.css" />
 </head>
 <body>
   <%@ include file="/header.jsp" %>
@@ -17,35 +18,31 @@
   <div class="mypage-sidebar">
   <ul class="menu-category">
     <li class="menu-title">회원정보</li>
-    <li class="submenu-item"><a href="#">개인정보 설정</a></li>
-    <li class="submenu-item"><a href="#">프로필 수정하기</a></li>
-    <li class="submenu-item"><a href="#">회원탈퇴</a></li>
+    <li class="submenu-item"><a href="javascript:void(0);" onclick="openModal()">개인정보 설정</a></li>
+	<li class="submenu-item"><a href="javascript:void(0);" onclick="openProfileModal()">프로필 수정하기</a></li>
+     <li class="submenu-item"><a href="javascript:void(0);" onclick="openDeleteModal()">회원탈퇴</a></li>
 
-    <li class="menu-title"><a href="#" class="menu-link">내가 본 영화</a></li>
-  </ul>
-</div>
-
-
-  <!-- 기존 프로필 박스 -->
-  <div class="mypage-profile-box">
-    <img src="./resources/images/기본프로필.png" alt="프로필" class="mypage-profile-img">
-    <div class="mypage-info-area">
-      <h4>임다현님 <span class="user-id">ockda0423</span></h4>
-      <p class="membership-grade">고객님은 <span class="fw-bold text-success">Basic</span> 입니다.</p>
-      <p class="sgv-label">⚙ 자주 가는 SGV 설정하기</p>
-      <div class="sgv-buttons">
-        <button class="btn btn-outline-success rounded-3 px-3">1 CGV 연남</button>
-        <button class="btn btn-outline-success rounded-3 px-3">2 CGV 연남</button>
-        <button class="btn btn-outline-success rounded-3 px-3">3 CGV 연남</button>
-        <button class="btn btn-outline-success rounded-3 px-3">4 CGV 연남</button>
-        <button class="btn btn-outline-success rounded-3 px-3">5 CGV 연남</button>
-      </div>
-    </div>
+      <li class="menu-title"><a href="#" class="menu-link">내가 본 영화</a></li>
+    </ul>
   </div>
 
-</div>
 
+	  <!-- 기존 프로필 박스 -->
+	  <div class="mypage-profile-box">
+	  <img class="mypage-profile-img" src="${pageContext.request.contextPath}/resources/images/${user.profileImage}" alt="프로필 이미지">
+	  <div class="mypage-info-area">
+	  <h4>${user.name}님 <span class="user-id">${user.email}</span></h4>
+	  <p class="membership-grade">고객님은 <span class="fw-bold text-success">${user.userClass}</span> 입니다.</p>
+	  </div>
+	  </div>
+	  </div>
+		
+	<%@ include file="editModal.jsp" %> 
+	<%@ include file="profileEditModal.jsp" %> 
+	<%@ include file="deleteModal.jsp" %>
+	
 
-<%@ include file="/footer.jsp" %>
+	  <%@ include file="/footer.jsp" %>
+	  <script src="./resources/js/modal.js"></script> 
 </body>
 </html>

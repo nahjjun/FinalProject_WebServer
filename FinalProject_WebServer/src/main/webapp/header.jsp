@@ -43,7 +43,7 @@
 	        <% } %>
 	
 	        <li>
-	            <a href="mypage.jsp" class="med text-decoration-none d-flex flex-column align-items-center">
+	            <a href="MypageController" class="med text-decoration-none d-flex flex-column align-items-center">
 	                <img src="./resources/images/마이페이지.png" alt="마이페이지" style="height: 24px;">
 	                <span>MY SKV</span>
 	            </a>
