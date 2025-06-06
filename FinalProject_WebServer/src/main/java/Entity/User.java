@@ -1,7 +1,9 @@
 package Entity;
 
 import java.sql.Date;
+
 import java.time.LocalDate;
+
 
 public class User {
    private String email;
@@ -12,6 +14,7 @@ public class User {
    private String phone; 
    private String userClass; 
    private String profileImage; // 기본 이미지 설정
+
 
    public User() {
 	   this.joinDate = Date.valueOf(LocalDate.now()); 
@@ -25,6 +28,7 @@ public class User {
       this.joinDate = Date.valueOf(LocalDate.now());
       this.userClass = userClass;
       this.profileImage = "기본프로필.png";
+
    }
 
 	public String getProfileImage() {
