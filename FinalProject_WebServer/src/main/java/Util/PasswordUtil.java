@@ -15,6 +15,9 @@ public class PasswordUtil {
          return null;
       }
    }
+   public static boolean matches(String plainPassword, String encodedPassword) {
+       return encode(plainPassword).equals(encodedPassword);
+   }
 
    public static int effectivenessConfirm(String email, String password, String name, String birth) {
 
