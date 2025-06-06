@@ -1,10 +1,16 @@
 package Entity;
 
+import java.sql.Date;
+
 public class User {
    private String email;
    private String encodedPassword;
    private String name;
    private String birth;
+   private String phone;
+   private Date join_date;
+   private String userClass;
+   private String profile_image;
 
    public User() {
    }
@@ -14,6 +20,10 @@ public class User {
       this.encodedPassword = encodedPassword;
       this.name = name;
       this.birth = birth;
+      this.phone = phone;
+      this.userClass = "BASIC";
+      this. profile_image = "기본프로필.png";
+      this.join_date=join_date;
    }
 
    public String getEmail() {
@@ -47,4 +57,36 @@ public class User {
    public void setBirth(String birth) {
       this.birth = birth;
    }
+   
+   public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public Date getJoinDate() {
+		return join_date;
+	}
+
+	public void setJoinDate(Date join_date) {
+		this.join_date = join_date;
+	}
+
+	public String getUserClass() {
+		return userClass;
+	}
+
+	public void setUserClass(String userClass) {
+		this.userClass = userClass;
+	}
+
+	public String getProfileImage() {
+		return profile_image;
+	}
+
+	public void setProfileImage(String profie_image) {
+		this.profile_image = profie_image;
+	}
 }
