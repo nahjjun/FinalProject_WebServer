@@ -14,7 +14,7 @@ public class MovieService {
 
 	// 특정 영화의 정보를 가져오는 함수
 	public Map<String, Object> getMovieInfo(MovieDto movieDto){
-		MovieDto dto = new MovieDto(movieDto.getTitle());
+		MovieDto dto = new MovieDto(movieDto.getMovieId());
 		return movieRepository.getMovieInfo(dto);
 	}
 	
@@ -27,4 +27,10 @@ public class MovieService {
 	public List<Map<String, Object>> getMovieInfoList(){
 		return movieRepository.getMovieInfoList();
 	}
+	
+	// 리뷰 데이터들을 불러오는 함수
+	public List<Map<String, Object>> getReviewInfoList(MovieDto dto){
+		return movieRepository.getReviewInfoList(dto);
+	}
+	
 }

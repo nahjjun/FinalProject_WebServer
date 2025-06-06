@@ -1,5 +1,7 @@
 package Service;
 
+import java.util.Map;
+
 import Dto.LoginRequestDto;
 import Repository.LoginRepository;
 import Util.PasswordUtil;
@@ -22,4 +24,9 @@ public class LoginService {
          return false;
       }
    }
+   
+// 로그인 되어있는 경우, 영화 상세페이지에서 review를 작성할 때 사용하기 위한 User 정보를 가져오는 함수
+	public Map<String, Object> getUserInfo(String email){
+		return loginRepository.getUserInfo(email);
+	}
 }

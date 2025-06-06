@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import Dto.LoginRequestDto;
 import Entity.LoginUser;
@@ -62,7 +63,15 @@ public class LoginController extends HttpServlet {
             System.out.println("로그인 성공!");
             // 로그인 성공 시, 세션에 사용자 정보를 저장한다.
             HttpSession session = request.getSession();
-            LoginUser loginUser = new LoginUser(email);
+            
+            // 사용자 정보를 불러옴
+            Map<String, Object> userInfo = loginService.getUserInfo(email);
+            int user_id = (int)userInfo.get("user_id");
+            String name = (String)userInfo.get("name");
+            String user_class = (String)userInfo.get("user_class");
+            
+            
+            LoginUser loginUser = new LoginUser(email, name, user_class, user_id);
             session.setAttribute("loginUser", loginUser);
             
             response.sendRedirect("MainPageController");
