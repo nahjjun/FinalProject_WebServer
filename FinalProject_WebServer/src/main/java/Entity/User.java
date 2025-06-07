@@ -1,18 +1,22 @@
 package Entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
+
 
 public class User {
    private String email;
    private String encodedPassword;
    private String name;
    private String birth;
-   private String phone;
-   private Date join_date;
-   private String userClass;
-   private String profile_image;
+   private Date joinDate;
+   private String phone; 
+   private String userClass; 
+   private String profileImage; // 기본 이미지 설정
+
 
    public User() {
+	   this.joinDate = Date.valueOf(LocalDate.now()); 
    }
 
    public User(String email, String encodedPassword, String name, String birth) {
@@ -20,11 +24,27 @@ public class User {
       this.encodedPassword = encodedPassword;
       this.name = name;
       this.birth = birth;
-      this.phone = phone;
-      this.userClass = "BASIC";
-      this. profile_image = "기본프로필.png";
-      this.join_date=join_date;
+      this.joinDate = Date.valueOf(LocalDate.now());
+      this.userClass = userClass;
+      this.profileImage = "기본프로필.png";
    }
+
+	public String getProfileImage() {
+	    return profileImage;
+	}
+	
+	public void setProfileImage(String profileImage) {
+	    this.profileImage = profileImage;
+	}
+
+   
+   public Date getJoinDate() {
+	   return joinDate;
+	}
+
+   public void setJoinDate(Date joinDate) {
+	   this.joinDate = joinDate;
+	}
 
    public String getEmail() {
       return this.email;
@@ -58,35 +78,20 @@ public class User {
       this.birth = birth;
    }
    
-   public String getPhone() {
-		return phone;
-	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+   public String getPhone() { 
+       return phone;
+   }
+   public void setPhone(String phone) { 
+       this.phone = phone;
+   }
+   
+   public String getUserClass() {
+	      return userClass;
+	   }
 
-	public Date getJoinDate() {
-		return join_date;
-	}
+	   public void setUserClass(String userClass) { 
+	      this.userClass = userClass;
+	   }
 
-	public void setJoinDate(Date join_date) {
-		this.join_date = join_date;
-	}
-
-	public String getUserClass() {
-		return userClass;
-	}
-
-	public void setUserClass(String userClass) {
-		this.userClass = userClass;
-	}
-
-	public String getProfileImage() {
-		return profile_image;
-	}
-
-	public void setProfileImage(String profie_image) {
-		this.profile_image = profie_image;
-	}
 }

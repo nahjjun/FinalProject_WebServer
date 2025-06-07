@@ -38,12 +38,14 @@ public class LoginController extends HttpServlet {
          case -1:
             page = "/WEB-INF/View/login.jsp";
             errorString = "이메일과 비밀번호 둘다 입력해야합니다!";
+            break;
          case 0:
          default:
             break;
          case 1:
             page = "/WEB-INF/View/login.jsp";
             errorString = "이메일 형식이 틀렸습니다!";
+            break;
          }
 
          RequestDispatcher dispatcher;

@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="./resources/css/movieChart.css" />
   
 </head>
+	<link rel="stylesheet" href="./resources/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="./resources/css/skvstyle.css" />
 <body>
   <%@ include file="/header.jsp" %>
   <%@ include file="/menu.jsp" %>
@@ -36,11 +38,12 @@
 	          <img src="${movie.poster_url}" class="card-img-top" alt="영화포스터">
 	        </div>
 	        <div class="card-body">
-	          <h5 class="card-title">${movie.title}</h5>
-	          <p class="card-text">관람평: ${movie.review_point}</p>
-	          <p class="card-text text-muted">개봉일: ${movie.date}</p>
-	          <a href="#" class="btn btn-outline-danger w-100">예매하기</a>
-	          <a href="MovieController?action=movieDetail&movie_id=${movie.movie_id}" class="btn btn-outline-danger w-100">상세정보</a>
+	          <h5 class="card-title">${movie.get("title")}</h5>
+	          <p class="card-text">관람평: ${review_point}</p>
+	          <p class="card-text text-muted">개봉일: ${movie.get("date")}</p>
+	          <a href="#" class="btn w-100">예매하기</a>
+			<a href="MovieController?action=movieDetail" class="btn w-100">상세정보</a>
+
 	        </div>
 	      </div>
 	    </div>

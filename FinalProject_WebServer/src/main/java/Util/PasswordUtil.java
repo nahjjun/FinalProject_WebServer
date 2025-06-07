@@ -19,6 +19,11 @@ public class PasswordUtil {
        return encode(plainPassword).equals(encodedPassword);
    }
 
+// 평문 비번과 암호화된 비번 비교
+   public static boolean matches(String rawPassword, String encodedPassword) {
+      return encode(rawPassword).equals(encodedPassword);
+   }
+
    public static int effectivenessConfirm(String email, String password, String name, String birth) {
 
 	   // 2. 비밀번호 제약조건
