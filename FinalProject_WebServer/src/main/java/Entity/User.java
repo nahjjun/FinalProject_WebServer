@@ -1,7 +1,6 @@
 package Entity;
 
 import java.sql.Date;
-
 import java.time.LocalDate;
 
 
@@ -28,7 +27,6 @@ public class User {
       this.joinDate = Date.valueOf(LocalDate.now());
       this.userClass = userClass;
       this.profileImage = "기본프로필.png";
-
    }
 
 	public String getProfileImage() {
@@ -80,6 +78,7 @@ public class User {
       this.birth = birth;
    }
    
+
    public String getPhone() { 
        return phone;
    }
@@ -94,4 +93,5 @@ public class User {
 	   public void setUserClass(String userClass) { 
 	      this.userClass = userClass;
 	   }
+
 }

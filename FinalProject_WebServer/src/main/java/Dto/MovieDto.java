@@ -1,14 +1,16 @@
 package Dto;
 
 public class MovieDto {
-	private final String title;
+	private final int movie_id;
 	
-	public MovieDto(String title) {
-		this.title = title;
+	
+	public MovieDto(int movie_id) {
+		this.movie_id = movie_id;
+	
 	}
-
-	public String getTitle() {
-		return title;
+	
+	public int getMovieId() {
+		return movie_id;
 	}
-
+	
 }

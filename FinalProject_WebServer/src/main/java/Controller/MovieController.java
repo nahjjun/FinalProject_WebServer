@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 @WebServlet("/MovieController")
@@ -28,18 +29,22 @@ public class MovieController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		
-		// "action" 파라미터값이 "movieDetail"이면, 영화의 상세 정보 페이지
-		if(request.getParameter("action").equals("movieDetail")) {
-			movieDetailFunc(request, response);
+		switch(request.getParameter("action")) {
+			// "action" 파라미터값이 "movieDetail"이면, 영화의 상세 정보 페이지
+			case "movieDetail":
+				movieDetailFunc(request, response);
+				break;
+			// "action" 파라미터값이 "movieChart"이면 영화 차트 페이지 
+			case "movieChart":
+				movieChartFunc(request, response);
+				break;
+			// "action" 파라미터값이 "movieList"이면 영화 리스트 페이지 
+			case "movieList":
+				movieListFunc(request, response);
+				break;
+			
 		}
-		// "action" 파라미터값이 "movieChart"이면 영화 차트 페이지 
-		else if(request.getParameter("action").equals("movieChart")){
-			movieChartFunc(request, response);
-		}
-		// "action" 파라미터값이 "movieList"이면 영화 리스트 페이지 
-		else if(request.getParameter("action").equals("movieList")){
-			movieListFunc(request, response);
-		}
+
 		
 	}
 
@@ -76,12 +81,24 @@ public class MovieController extends HttpServlet {
 	private void movieDetailFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/movieDetail.jsp");
 		
-		// url로 넘어온 영화 이름값을 받아온다.
-		MovieDto movieDto = new MovieDto(request.getParameter("title"));
-		Map<String, Object> movieInfo = movieService.getMovieInfo(movieDto);
+		
+		// url로 넘어온 영화 id를 받아온다.
+		int movie_id = Integer.parseInt(request.getParameter("movie_id"));
+		MovieDto dto = new MovieDto(movie_id);
+		Map<String, Object> movieInfo = movieService.getMovieInfo(dto);
 		
 		// url로 넘어온 "영화 이름" 데이터를 통해서 해당 영화의 데이터들을 request에 넣어준다.
 		request.setAttribute("movieInfo", movieInfo);
+
+		// "영화 아이디"를 사용해서 해당 영화의 리뷰 데이터들을 찾아 request에 저장함
+		List<Map<String, Object>> reviewInfoList = movieService.getReviewInfoList(dto);
+		if(reviewInfoList != null) {
+			request.setAttribute("reviewInfoList", reviewInfoList);
+			
+			for(int i=0; i<reviewInfoList.size(); ++i) {
+				System.out.println("review_id : " + reviewInfoList.get(i).get("review_id"));
+			}
+		}
 		
 		// 이후, dispatcher.forward()로 페이지를 변경해준다.
 		dispatcher.forward(request, response);
