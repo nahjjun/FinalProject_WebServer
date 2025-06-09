@@ -64,4 +64,10 @@ public class ReviewService {
 	public void setReviewUnlikeInfo(int reviewReaction_id, int review_id, int type) {
 		reviewRepository.setReviewUnlikeInfo(reviewReaction_id, review_id, type);
 	}
+	
+	
+	// 해당 영화의 리뷰 포인트를 업데이트 하는 함수
+	public boolean updateReviewPoint(int movie_id) {
+		return reviewRepository.updateReviewPoint(movie_id);		
+	}
 }

@@ -36,6 +36,14 @@ public class ReviewController extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		
 		
+		// DB에서 영화 정보를 가져와서, 해당 영화의 상세정보를 가져온다.
+	    String movie_id_string = request.getParameter("movie_id");
+	    if(movie_id_string == null) {
+	    	System.out.println("movie_id를 받아오지 못했습니다.");
+	    	return;
+	    }
+	    int movie_id = Integer.parseInt(movie_id_string);
+	    
 		// 리뷰 작업을 한 다음, 다시 영화 상세페이지로 돌아가야하므로 dispatcher는 모두 동일하게 설정
 	    switch(request.getParameter("action")) {
     		// 사용자가 작성한 review 글 수정 작업 (본인이 쓴 글인지 확인해야함)
@@ -45,6 +53,8 @@ public class ReviewController extends HttpServlet {
     		// 사용자가 작성한 review 글 삭제 작업 (본인이 쓴 글인지 확인해야함)
 	    	case "delete":   
 	    		deleteFunc(request, response);
+	    	    // 해당 영화 리뷰 포인트 업데이트
+	    	    reviewService.updateReviewPoint(movie_id);
 	    		break;
 	    	// 각 review에 좋아요/싫어요 누르기 (둘 중 한번에 하나만 누를 수 있음)
 	    	case "like":
@@ -56,13 +66,7 @@ public class ReviewController extends HttpServlet {
 	    }
 	    
 	    // 각 작업이 끝나고 나서 예외가 없었다면, 영화 상세페이지로 다시 돌아간다.
-	    // DB에서 영화 정보를 가져와서, 해당 영화의 상세정보를 가져온다.
-	    String movie_id_string = request.getParameter("movie_id");
-	    if(movie_id_string == null) {
-	    	System.out.println("movie_id를 받아오지 못했습니다.");
-	    	return;
-	    }
-	    int movie_id = Integer.parseInt(movie_id_string);
+	    
 	    Map<String, Object> movieInfo = reviewService.getMovieInfo(movie_id);
 	    request.setAttribute("movieInfo", movieInfo);
 	    
@@ -83,6 +87,9 @@ public class ReviewController extends HttpServlet {
 	    // 각 작업이 끝나고 나면, 영화 상세페이지로 다시 돌아간다.
 	    // DB에서 영화 정보를 가져와서, 해당 영화의 상세정보를 가져온다.
 	    int movie_id = Integer.parseInt(request.getParameter("movie_id"));
+	    // 해당 영화 리뷰 포인트 업데이트
+	    reviewService.updateReviewPoint(movie_id);
+	    
 	    Map<String, Object> movieInfo = reviewService.getMovieInfo(movie_id);
 	    request.setAttribute("movieInfo", movieInfo);
 	    

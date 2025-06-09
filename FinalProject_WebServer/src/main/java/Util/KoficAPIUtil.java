@@ -93,7 +93,7 @@ public class KoficAPIUtil {
 		// http url 직접 호출 방식으로 searchMovieList를 사용해야함
 		String apiUrl = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json"
 		           + "?key=" + key
-		           + "&curPage=4"
+		           + "&curPage=5"
 		           + "&itemPerPage=100";
 
 		// movieCd 예시 :  20170561 -> 블랙팬서 영화 코드

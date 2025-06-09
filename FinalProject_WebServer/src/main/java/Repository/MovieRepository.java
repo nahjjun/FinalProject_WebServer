@@ -41,7 +41,7 @@ public class MovieRepository {
 				int duration = rs.getInt("duration");
 				String description = rs.getString("description");
 				String poster_url = rs.getString("poster_url");
-				int review_point = rs.getInt("review_point");
+				float review_point = rs.getFloat("review_point");
 				String directors = rs.getString("directors");
 				String actors = rs.getString("actors");
 				Date d = rs.getDate("target_date");
@@ -109,7 +109,7 @@ public class MovieRepository {
 				}
 				
 				String poster_url = rs.getString("poster_url");
-		        int review_point = rs.getInt("review_point");
+		        float review_point = rs.getFloat("review_point");
 				
 				Map<String, Object> map = new HashMap<String, Object>();
 				
@@ -148,7 +148,7 @@ public class MovieRepository {
 				String movie_id = rs.getString("movie_id");
 				String title = rs.getString("title");
 				String poster_url = rs.getString("poster_url");
-				int review_point = rs.getInt("review_point");
+				float review_point = rs.getFloat("review_point");
 				String dateStr = rs.getString("target_date");
 				Date date=null;
 				if (dateStr != null && !dateStr.trim().isEmpty()) {
