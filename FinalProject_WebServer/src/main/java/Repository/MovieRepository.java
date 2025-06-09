@@ -134,7 +134,7 @@ public class MovieRepository {
 	
 	// 영화 정보 리스트를 가져오는 함수
 	public List<Map<String, Object>> getMovieInfoList(){
-		String sql = "SELECT movie_id, title, poster_url, poster_url, target_date FROM `Movie`";
+		String sql = "SELECT movie_id, title, poster_url, review_point, target_date FROM `Movie`";
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		
 		try {
@@ -149,14 +149,18 @@ public class MovieRepository {
 				String title = rs.getString("title");
 				String poster_url = rs.getString("poster_url");
 				int review_point = rs.getInt("review_point");
-				Date d = rs.getDate("target_date");
-				String date=null;
-				if(d == null) {
+				String dateStr = rs.getString("target_date");
+				Date date=null;
+				if (dateStr != null && !dateStr.trim().isEmpty()) {
+				    date = Date.valueOf(dateStr);  // yyyy-MM-dd 형식만 허용
+				}
+				String target_date=null;
+				if(date == null) {
 					System.out.println("개봉일 정보가 null입니다.");
-					date = "개봉날짜 미정";
+					target_date = "개봉날짜 미정";
 				} else {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
-					 date = sdf.format(d);	
+					target_date = sdf.format(date);	
 				}
 				
 				
@@ -164,7 +168,7 @@ public class MovieRepository {
 				map.put("title", title);
 				map.put("poster_url", poster_url);
 				map.put("review_point", review_point);
-				map.put("date", date);
+				map.put("date", target_date);
 				
 				result.add(map);
 			}

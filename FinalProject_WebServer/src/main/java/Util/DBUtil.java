@@ -240,17 +240,22 @@ public class DBUtil {
 
 					// 6. 상영 시간
 		            String openDt = (String) movieInfo.get("openDt");
-					if (openDt.matches("\\d{4}-\\d{2}-\\d{2}")) {
-					    // 이미 yyyy-MM-dd 형식이면 바로 저장
-						pstmt.setDate(6, java.sql.Date.valueOf(openDt));
-					} else if (openDt.matches("\\d{8}")) {
-					    // yyyyMMdd → yyyy-MM-dd로 변환
-					    String formattedDate = openDt.substring(0, 4) + "-" + openDt.substring(4, 6) + "-" + openDt.substring(6);
-					    pstmt.setDate(6, java.sql.Date.valueOf(formattedDate));
-					} else {
-					    System.out.println("잘못된 날짜 형식: " + openDt);
-					    pstmt.setNull(6, java.sql.Types.DATE);
-					}
+		            if(openDt != null && !openDt.trim().isEmpty()) {
+		            	if (openDt.matches("\\d{4}-\\d{2}-\\d{2}")) {
+						    // 이미 yyyy-MM-dd 형식이면 바로 저장
+							pstmt.setDate(6, java.sql.Date.valueOf(openDt));
+						} else if (openDt.matches("\\d{8}")) {
+						    // yyyyMMdd → yyyy-MM-dd로 변환
+						    String formattedDate = openDt.substring(0, 4) + "-" + openDt.substring(4, 6) + "-" + openDt.substring(6);
+						    pstmt.setDate(6, java.sql.Date.valueOf(formattedDate));
+						} else {
+						    System.out.println("잘못된 날짜 형식: " + openDt);
+						    pstmt.setNull(6, java.sql.Types.DATE);
+						}	
+		            } else {
+		            	pstmt.setNull(6, java.sql.Types.DATE);
+		            }
+					 
 					
 					
 					// TMDB

@@ -7,10 +7,10 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>무비차트</title>
+  <title>무비 리스트</title>
   <link rel="stylesheet" href="./resources/css/bootstrap.min.css" />
   <link rel="stylesheet" href="./resources/css/skvstyle.css" />
-  <link rel="stylesheet" href="./resources/css/movieChart.css" />
+  <link rel="stylesheet" href="./resources/css/movieList.css" />
   
 </head>
 	<link rel="stylesheet" href="./resources/css/bootstrap.min.css" />
@@ -21,7 +21,7 @@
 
   <div class="container mt-5">
   <div class="movie-chart-header">
-    <h2 class="fw-bold fs-3">무비차트</h2>
+    <h2 class="fw-bold fs-3">무비리스트</h2>
     <div class="form-check">
       <input class="form-check-input" type="checkbox" value="" id="onlyShowing">
       <label class="form-check-label" for="onlyShowing">현재 상영작만 보기</label>
@@ -30,17 +30,16 @@
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
 	  
-	  <c:forEach var="movie" items="${boxOfficeList}"> 
+	  <c:forEach var="movie" items="${movieInfoList}"> 
 	    <div class="col">
 	      <div class="card h-100 shadow-sm movie-card">
 	        <div class="position-relative">
-	          <span class="rank-badge">No.${movie.rank}</span>
 	          <img src="${movie.poster_url}" class="card-img-top" alt="영화포스터" onerror="this.onerror=null; this.src='./resources/images/default_poster.png';">
 	        </div>
 	        <div class="card-body">
-	          <h5 class="card-title">${movie.get("title")}</h5>
+	          <h5 class="card-title">${movie.title}</h5>
 	          <p class="card-text">관람평: ${movie.review_point}</p>
-	          <p class="card-text text-muted">개봉일: ${movie.get("date")}</p>
+	          <p class="card-text text-muted">개봉일: ${movie.date}</p>
 	          <a href="#" class="btn w-100">예매하기</a>
 			<a href="MovieController?action=movieDetail&movie_id=${movie.movie_id}" class="btn w-100">상세정보</a>
 

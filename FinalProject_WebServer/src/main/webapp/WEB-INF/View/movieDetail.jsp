@@ -15,7 +15,7 @@
 	<%@ include file="/menu.jsp" %>
 	
 	<div class="movie_info">
-		<img src="${movieInfo.poster_url}" class="movie_poster" alt="영화 포스터">
+		<img src="${movieInfo.poster_url}" class="movie_poster" alt="영화 포스터" onerror="this.onerror=null; this.src='./resources/images/default_poster.png';">
 		<div class="info_box">
 			<p>${movieInfo.title}</p>
 			<p><b>평점: ${movieInfo.review_point}</b></p>
@@ -30,7 +30,7 @@
 		<a href="#" class="btn btn-primary">예매하기</a>
 	</div>
 	<div class="movie_description">
-		<p> ${movieInfo.description}
+		<p> ${movieInfo.description}</p>
 	</div>
 	
 	<div class="movie_review">
