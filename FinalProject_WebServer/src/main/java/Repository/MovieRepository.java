@@ -42,6 +42,17 @@ public class MovieRepository {
 				String description = rs.getString("description");
 				String poster_url = rs.getString("poster_url");
 				int review_point = rs.getInt("review_point");
+				String directors = rs.getString("directors");
+				String actors = rs.getString("actors");
+				Date d = rs.getDate("target_date");
+				String date=null;
+				if(d == null) {
+					System.out.println("개봉일 정보가 null입니다.");
+					date = "개봉날짜 미정";
+				} else {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+					 date = sdf.format(d);	
+				}
 				
 				result.put("movie_id", movie_id);
 				result.put("title", title);
@@ -50,6 +61,9 @@ public class MovieRepository {
 				result.put("description", description);
 				result.put("poster_url", poster_url);
 				result.put("review_point", review_point);
+				result.put("directors", directors);
+				result.put("actors", actors);
+				result.put("date", date);
 				
 				rs.close();
 				pstmt.close();
@@ -118,9 +132,9 @@ public class MovieRepository {
 		
 	}
 	
-	// 영화 박스오피스 리스트를 가져오는 함수
+	// 영화 정보 리스트를 가져오는 함수
 	public List<Map<String, Object>> getMovieInfoList(){
-		String sql = "SELECT * FROM `Movie`";
+		String sql = "SELECT movie_id, title, poster_url, poster_url, target_date FROM `Movie`";
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		
 		try {
@@ -133,19 +147,24 @@ public class MovieRepository {
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				String movie_id = rs.getString("movie_id");
 				String title = rs.getString("title");
-				String genre = rs.getString("genre");
-				int duration = rs.getInt("duration");
-				String description = rs.getString("description");
 				String poster_url = rs.getString("poster_url");
 				int review_point = rs.getInt("review_point");
+				Date d = rs.getDate("target_date");
+				String date=null;
+				if(d == null) {
+					System.out.println("개봉일 정보가 null입니다.");
+					date = "개봉날짜 미정";
+				} else {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+					 date = sdf.format(d);	
+				}
+				
 				
 				map.put("movie_id", movie_id);
 				map.put("title", title);
-				map.put("genre", genre);
-				map.put("duration", duration);
-				map.put("description", description);
 				map.put("poster_url", poster_url);
 				map.put("review_point", review_point);
+				map.put("date", date);
 				
 				result.add(map);
 			}

@@ -151,7 +151,7 @@ public class KoficAPIUtil {
 		           + "&movieCd="+movieCd;
 		
 		// 예시 url
-		// http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=4efdb259b1c88d86ae23dac5306f08a5&movieCd=20170561
+		// http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=4efdb259b1c88d86ae23dac5306f08a5&movieCd=20170561
 		
 		// 2. HTTP 연결 설정 및 요청
 		// HttpURLConnection 객체를 생성하고 GET 방식으로 요청 보냄
