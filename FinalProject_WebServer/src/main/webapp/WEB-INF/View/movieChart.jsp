@@ -32,19 +32,22 @@
 	  
 	  <c:forEach var="movie" items="${boxOfficeList}"> 
 	    <div class="col">
-	      <div class="card h-100 shadow-sm movie-card">
+	      <div class="card h-100 d-flex flex-column shadow-sm movie-card">
 	        <div class="position-relative">
-	          <span class="rank-badge">No.${movie.rank}</span>
-	          <img src="${movie.poster_url}" class="card-img-top" alt="영화포스터" onerror="this.onerror=null; this.src='./resources/images/default_poster.png';">
+	          	<span class="rank-badge">No.${movie.rank}</span>
+	          	<img src="${movie.poster_url}" class="card-img-top" alt="영화포스터" onerror="this.onerror=null; this.src='./resources/images/default_poster.png';">
 	        </div>
-	        <div class="card-body">
-	          <h5 class="card-title">${movie.get("title")}</h5>
-	          <p class="card-text">관람평: ${movie.review_point}</p>
-	          <p class="card-text text-muted">개봉일: ${movie.get("date")}</p>
-	          <a href="#" class="btn w-100">예매하기</a>
-			<a href="MovieController?action=movieDetail&movie_id=${movie.movie_id}" class="btn w-100">상세정보</a>
-
-	        </div>
+	        <div class="card-body d-flex flex-column">
+				<div>
+				  	<h5 class="card-title">${movie.get("title")}</h5>
+				  	<p class="card-text">관람평: ${movie.review_point}</p>
+					<p class="card-text text-muted">개봉일: ${movie.get("date")}</p>
+				</div>
+				<div class="mt-auto d-flex flex-column gap-2">
+				  	<a href="#" class="btn btn-outline-success w-100">예매하기</a>
+				  	<a href="MovieController?action=movieDetail&movie_id=${movie.movie_id}" class="btn btn-outline-success w-100">상세정보</a>
+				</div>
+			</div>
 	      </div>
 	    </div>
 	   </c:forEach>

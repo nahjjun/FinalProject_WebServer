@@ -31,3 +31,9 @@
   font-weight: 600;
   padding: 0.5rem;
 }
+
+.card-body{
+	display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

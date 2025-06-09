@@ -47,12 +47,12 @@
 		
 	  
 	  <!-- 오른쪽: 검색창 -->
-	  <form class="d-flex search-form" action="search.jsp" method="get">
-		  <input class="form-control me-2" type="search" name="query" placeholder="검색어 입력">
+	<form class="d-flex search-form" action="SearchController" method="get">
+		  <input class="form-control me-2" type="search" name="search_query" placeholder="검색어 입력">
 		  	<button class="search-btn" type="submit">
 		    	<img src="./resources/images/돋보기.png" alt="검색" style="height: 25px;">
   			</button>
-</form>
+	</form>
 
 </nav>
 
