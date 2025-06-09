@@ -197,24 +197,23 @@ public class ReviewController extends HttpServlet {
 		
 		// 로그인된 상태라면, user 정보를 가져온다.
 		Map<String, Object> reviewReactionInfo = reviewService.getReviewReactionInfo(user_id, review_id);
-		if(reviewReactionInfo != null) {
-			int reviewReaction_id = (int)reviewReactionInfo.get("reviewReaction_id");
-			int reactionType = (int)reviewReactionInfo.get("reactionType");
-			switch(reactionType) {
-				case 0: // 아직 선택되지 않은 리뷰인 경우, 해당 리뷰 좋아요 증가 설정
-					reviewService.setReviewLikeInfo(reviewReaction_id, review_id, 1);
-					break;
-				case 1: // 좋아요가 선택된 리뷰인 경우, 해당 리뷰 좋아요 감소 설정
-					reviewService.setReviewLikeInfo(reviewReaction_id, review_id, 2);
-					break;
-				case 2: // 싫어요가 선택된 리뷰인 경우
-					request.setAttribute("errorScript", "<script>alert('이미 싫어요를 눌렀습니다!');</script>");
-					break;
-			}	
-		}else {
-			System.out.println("ReviewController/likeFunc() ->  reviewReactionInfo 가져오기 실패");
+		if(reviewReactionInfo == null) {// 리액션 정보가 없으면, 해당 정보 생성
+			reviewService.createReviewReaction(user_id, review_id);
+			reviewReactionInfo = reviewService.getReviewReactionInfo(user_id, review_id);
 		}
-		
+		int reviewReaction_id = (int)reviewReactionInfo.get("reviewReaction_id");
+		int reactionType = (int)reviewReactionInfo.get("reactionType");
+		switch(reactionType) {
+			case 0: // 아직 선택되지 않은 리뷰인 경우, 해당 리뷰 좋아요 증가 설정
+				reviewService.setReviewLikeInfo(reviewReaction_id, review_id, 1);
+				break;
+			case 1: // 좋아요가 선택된 리뷰인 경우, 해당 리뷰 좋아요 감소 설정
+				reviewService.setReviewLikeInfo(reviewReaction_id, review_id, 2);
+				break;
+			case 2: // 싫어요가 선택된 리뷰인 경우
+				request.setAttribute("errorScript", "<script>alert('이미 싫어요를 눌렀습니다!');</script>");
+				break;
+		}
 		
 	}
 	
@@ -235,6 +234,10 @@ public class ReviewController extends HttpServlet {
 		
 		// 로그인된 상태라면, user 정보를 가져온다.
 		Map<String, Object> reviewReactionInfo = reviewService.getReviewReactionInfo(user_id, review_id);
+		if(reviewReactionInfo == null) {// 리액션 정보가 없으면, 해당 정보 생성
+			reviewService.createReviewReaction(user_id, review_id);
+			reviewReactionInfo = reviewService.getReviewReactionInfo(user_id, review_id);
+		}
 		int reviewReaction_id = (int)reviewReactionInfo.get("reviewReaction_id");
 		int reactionType = (int)reviewReactionInfo.get("reactionType");
 		switch(reactionType) {
