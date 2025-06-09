@@ -194,6 +194,27 @@ public class ReviewRepository {
 		}
 	}
 	
+	// 해당 리뷰의 리액션 정보를 제거하는 함수
+	public boolean deleteReviewReaction(int user_id, int review_id) {
+		String sql = "DELETE FROM `ReviewReaction` WHERE review_id=? AND user_id=?";
+		
+		try {
+			Connection con = DBUtil.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, review_id);
+			pstmt.setInt(2, user_id);
+			
+			pstmt.executeUpdate();
+			
+			pstmt.close();
+			con.close();
+			return true;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	
 	// 해당 리뷰의 리액션 정보를 가져오는 함수
 	public Map<String, Object> getReviewReactionInfo(int user_id, int review_id){

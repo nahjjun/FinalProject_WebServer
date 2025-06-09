@@ -13,7 +13,7 @@
 <%@ include file="menu.jsp" %>
 <%@ include file = "topAdd.jsp" %>
 <%@ include file = "mainMovieChart.jsp" %>
-	
+
 <%@ include file="footer.jsp" %>
 </body>
 <script src="./resources/js/videoControl.js"></script>

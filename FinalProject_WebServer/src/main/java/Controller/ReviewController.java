@@ -171,9 +171,9 @@ public class ReviewController extends HttpServlet {
 		// 본인이 작성한 글이 아닌 경우, 알림창을 띄워준다.
 		if(user_id != user.getUserId()) {
 			request.setAttribute("errorScript", "<script>alert('본인이 작성한 글만 삭제할 수 있습니다!');</script>");
-		} else { // 본인이 작성한 글인 경우, 해당 리뷰글을 삭제한다.
+		} else { // 본인이 작성한 글인 경우, 해당 리뷰반응 객체와 리뷰글을 삭제한다.
 			int review_id = Integer.parseInt(request.getParameter("review_id"));
-			if(!reviewService.deleteReview(review_id)) {
+			if(!reviewService.deleteReviewReaction(user_id, review_id) || !reviewService.deleteReview(review_id)) {
 				System.err.println("ReviewController/deleteFunc() -> 리뷰 지우기 실패");
 			}
 		}
@@ -208,7 +208,7 @@ public class ReviewController extends HttpServlet {
 					reviewService.setReviewLikeInfo(reviewReaction_id, review_id, 2);
 					break;
 				case 2: // 싫어요가 선택된 리뷰인 경우
-					request.setAttribute("errorScript", "<script>alert('이미 좋아요를 눌렀습니다!');</script>");
+					request.setAttribute("errorScript", "<script>alert('이미 싫어요를 눌렀습니다!');</script>");
 					break;
 			}	
 		}else {
@@ -242,7 +242,7 @@ public class ReviewController extends HttpServlet {
 				reviewService.setReviewUnlikeInfo(reviewReaction_id, review_id, 1);
 				break;
 			case 1: // 좋아요가 선택된 리뷰인 경우
-				request.setAttribute("errorScript", "<script>alert('이미 싫어요를 눌렀습니다!');</script>");
+				request.setAttribute("errorScript", "<script>alert('이미 좋아요를 눌렀습니다!');</script>");
 				break;
 			case 2: // 싫어요가 선택된 리뷰인 경우, 해당 리뷰 싫어요 감소 설정
 				reviewService.setReviewUnlikeInfo(reviewReaction_id, review_id, 2);

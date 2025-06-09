@@ -44,6 +44,9 @@ public class ReviewService {
 		return reviewRepository.createReviewReaction(user_id, review_id);
 	}
 	
+	public boolean deleteReviewReaction(int user_id, int review_id) {
+		return reviewRepository.deleteReviewReaction(user_id, review_id);
+	}
 	
 	// 해당 리뷰의 리액션 정보를 가져오는 함수
 	public Map<String, Object> getReviewReactionInfo(int user_id, int review_id){
