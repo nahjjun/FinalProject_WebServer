@@ -18,7 +18,7 @@
 		<img src="${movieInfo.poster_url}" class="movie_poster" alt="영화 포스터" onerror="this.onerror=null; this.src='./resources/images/default_poster.png';">
 		<div class="info_box">
 			<p>${movieInfo.title}</p>
-			<p><b>평점: ${movieInfo.review_point}</b></p>
+			<p><b>평점: ⭐ ${movieInfo.review_point}/5</b></p>
 			<hr/>
 			<p><b>감독:</b> ${movieInfo.directors}</p>
 			<p><b>배우:</b> ${movieInfo.actors }</p>

@@ -82,7 +82,9 @@ public class ReviewController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
     	// 사용자가 작성한 review 글 DB에 저장 후 해당 리뷰 아래에 추가해주기
-		registerFunc(request, response);
+		if(!registerFunc(request, response)) {
+			return;
+		}
 		
 	    // 각 작업이 끝나고 나면, 영화 상세페이지로 다시 돌아간다.
 	    // DB에서 영화 정보를 가져와서, 해당 영화의 상세정보를 가져온다.
@@ -102,13 +104,13 @@ public class ReviewController extends HttpServlet {
 	}
 
 	// 사용자가 작성한 review 글 DB에 저장 후 해당 리뷰 아래에 추가해주기
-	private void registerFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private boolean registerFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 만약 로그인된 상태라면, 현재 세션에 저장된 사용자 아이디를 가져와서 "이름", "class", "email"값을 가져와서 request에 넣어준다.
 		HttpSession session = request.getSession(false); // false 인자값으로 주면, 해당 세션이 없을 경우 null 반환
 		// 로그인되지 않은 상태면 로그인 페이지로 보낸다.
 		if(session == null || session.getAttribute("loginUser") == null) {
 			response.sendRedirect("LoginController");
-			return;
+			return false;
 		}
 		
 		// 로그인된 상태라면, email값을 가져와서 user 정보를 가져온다.
@@ -135,7 +137,7 @@ public class ReviewController extends HttpServlet {
 		if(!reviewService.createReviewReaction(user_id, review_id)) {
 			System.out.println("ReviewController/registerFunc() -> 새로운 리엑션 추가하기 실패");
 		}
-		
+		return true;
 	}
 	
 	// 사용자가 작성한 review 글 수정 작업 (본인이 쓴 글인지 확인해야함)

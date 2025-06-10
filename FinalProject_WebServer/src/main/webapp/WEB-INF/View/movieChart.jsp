@@ -40,7 +40,7 @@
 	        <div class="card-body d-flex flex-column">
 				<div>
 				  	<h5 class="card-title">${movie.get("title")}</h5>
-				  	<p class="card-text">관람평: ${movie.review_point}</p>
+				  	<p class="card-text">관람평: ⭐ ${movie.review_point}/5</p>
 					<p class="card-text text-muted">개봉일: ${movie.get("date")}</p>
 				</div>
 				<div class="mt-auto d-flex flex-column gap-2">
