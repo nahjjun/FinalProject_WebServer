@@ -1,13 +1,15 @@
 package Repository;
 
-import Dto.LoginRequestDto;
-import Util.DBUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
+import Dto.LoginRequestDto;
 import Entity.User;
+import Util.DBUtil;
 
 public class LoginRepository {
    public boolean confirm(LoginRequestDto loginRequestDto) {
@@ -62,6 +64,7 @@ public class LoginRepository {
 	      e.printStackTrace();
 	   }
 	   return null;
+   }
 
 	// 로그인된 경우, User 정보를 가져오는 함수
 	public Map<String, Object> getUserInfo(String email){

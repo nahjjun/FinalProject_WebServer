@@ -24,12 +24,21 @@ public class MypageController extends HttpServlet {
         LoginUser loginUser = (LoginUser) session.getAttribute("loginUser");
 
         if (loginUser == null) {
-            response.sendRedirect("LoginController"); // 로그인 안되어 있으면 로그인으로 보내기
+        	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/login.jsp");
+        	dispatcher.forward(request, response);
+        	// 로그인 안되어 있으면 로그인으로 보내기
             return;
         }
 
         String email = loginUser.getEmail();
         User user = userRepository.findByEmail(email);
+        
+        if (user == null) {
+            request.setAttribute("message", "사용자 정보를 찾을 수 없습니다.");
+            request.setAttribute("nextPage", "login.jsp");
+            request.getRequestDispatcher("/WEB-INF/View/editResult.jsp").forward(request, response);
+            return;
+        }
         
         if (user.getProfileImage() == null || user.getProfileImage().isEmpty()) {
             user.setProfileImage("기본프로필.png");

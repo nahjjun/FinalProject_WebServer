@@ -16,25 +16,24 @@ public class UserRepository {
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setString(1, email);
 			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				 if (rs.next()) {
-			            user = new User();
-			            user.setEmail(rs.getString("email"));
-			            user.setEncodedPassword(rs.getString("password"));
-			            user.setName(rs.getString("name"));
-			            user.setBirth(rs.getString("birth"));
-			            user.setPhone(rs.getString("phone"));
-			            user.setJoinDate(rs.getDate("join_date"));
-			            user.setUserClass(rs.getString("class"));
-			            user.setProfileImage(rs.getString("profile_image"));
-			            return user;
-			        }
-			}
+			 if (rs.next()) {
+		            user = new User();
+		            user.setEmail(rs.getString("email"));
+		            user.setEncodedPassword(rs.getString("password"));
+		            user.setName(rs.getString("name"));
+		            user.setBirth(rs.getString("birth"));
+		            user.setPhone(rs.getString("phone"));
+		            user.setJoinDate(rs.getDate("join_date"));
+		            user.setUserClass(rs.getString("class"));
+		            user.setProfileImage(rs.getString("profile_image"));
+		            return user;
+		        }
+			 
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return user;
+		e.printStackTrace();
 	}
+	return user;
+}
 
 	public void updateByEmail(String email, String phone, String encodedPassword) {
 		String sql = "UPDATE User SET phone = ?, password = ? WHERE email = ?";

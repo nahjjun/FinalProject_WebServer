@@ -15,9 +15,7 @@ public class PasswordUtil {
          return null;
       }
    }
-   public static boolean matches(String plainPassword, String encodedPassword) {
-       return encode(plainPassword).equals(encodedPassword);
-   }
+
 
 // 평문 비번과 암호화된 비번 비교
    public static boolean matches(String rawPassword, String encodedPassword) {

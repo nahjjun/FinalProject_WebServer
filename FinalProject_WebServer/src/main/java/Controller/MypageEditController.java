@@ -100,8 +100,6 @@ public class MypageEditController extends HttpServlet {
 		request.setAttribute("nextPage", "MypageController");
 		request.getRequestDispatcher("/WEB-INF/View/editResult.jsp").forward(request, response);
 
-		// 마이페이지로 이동
-		//response.sendRedirect("MypageController");
 	}
 }
 
