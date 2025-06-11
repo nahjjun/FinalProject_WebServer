@@ -1,4 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="Entity.LoginUser" %>
 <link rel="stylesheet" href="./resources/css/skvstyle.css" />
 <%

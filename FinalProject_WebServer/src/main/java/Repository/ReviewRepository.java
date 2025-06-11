@@ -67,7 +67,7 @@ public class ReviewRepository {
 				int duration = rs.getInt("duration");
 				String description = rs.getString("description");
 				String poster_url = rs.getString("poster_url");
-				int review_point = rs.getInt("review_point");
+				float review_point = rs.getFloat("review_point");
 				
 				result.put("movie_id", movie_id);
 				result.put("title", title);
@@ -194,6 +194,27 @@ public class ReviewRepository {
 		}
 	}
 	
+	// 해당 리뷰의 리액션 정보를 제거하는 함수
+	public boolean deleteReviewReaction(int user_id, int review_id) {
+		String sql = "DELETE FROM `ReviewReaction` WHERE review_id=? AND user_id=?";
+		
+		try {
+			Connection con = DBUtil.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, review_id);
+			pstmt.setInt(2, user_id);
+			
+			pstmt.executeUpdate();
+			
+			pstmt.close();
+			con.close();
+			return true;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	
 	// 해당 리뷰의 리액션 정보를 가져오는 함수
 	public Map<String, Object> getReviewReactionInfo(int user_id, int review_id){
@@ -276,11 +297,7 @@ public class ReviewRepository {
 					pstmt.setInt(1, 0);
 					pstmt.setInt(2, reviewReaction_id);
 					pstmt.executeUpdate();
-					
 				}
-				
-
-				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -341,5 +358,39 @@ public class ReviewRepository {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	
+	}
+	
+	// 해당 영화의 리뷰 포인트를 갱신시켜주는 함수
+	public boolean updateReviewPoint(int movie_id) {
+		// 1. 해당 영화의 모든 리뷰들을 가져온다 
+		String sql = "SELECT rating FROM `Review` WHERE movie_id=?"; 
+		
+		try {
+			Connection con = DBUtil.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, movie_id);
+			
+			// 해당 영화의 모든 리뷰들의 점수를 가져와서, 해당 리뷰들의 평균을 구한다.
+			ResultSet rs = pstmt.executeQuery();
+			int num = 0, sum=0;
+			while(rs.next()) {
+				num++;
+				sum += rs.getInt("rating");
+			}
+			float review_point = (float)sum/num;
+			System.out.println(movie_id + "의 리뷰 포인트 : " + review_point);
+			
+			sql = "UPDATE `Movie` SET review_point=? WHERE movie_id=?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setFloat(1, review_point);
+			pstmt.setInt(2, movie_id);
+			pstmt.executeUpdate();
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

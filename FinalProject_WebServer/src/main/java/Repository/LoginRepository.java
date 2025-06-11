@@ -65,7 +65,6 @@ public class LoginRepository {
 	   }
 	   return null;
    }
-
 	// 로그인된 경우, User 정보를 가져오는 함수
 	public Map<String, Object> getUserInfo(String email){
 		String sql = "SELECT user_id, email, name, class FROM User WHERE email=?";

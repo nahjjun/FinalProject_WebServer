@@ -15,21 +15,22 @@
 	<%@ include file="/menu.jsp" %>
 	
 	<div class="movie_info">
-		<img src="${movieInfo.poster_url}" class="movie_poster" alt="영화 포스터">
+		<img src="${movieInfo.poster_url}" class="movie_poster" alt="영화 포스터" onerror="this.onerror=null; this.src='./resources/images/default_poster.png';">
 		<div class="info_box">
 			<p>${movieInfo.title}</p>
-			<p>예매율: </p>
+			<p><b>평점: ⭐ ${movieInfo.review_point}/5</b></p>
 			<hr/>
-			<p>감독: / 배우: </p>
-			<p>장르: ${movieInfo.genre} </p>
-			<p>상영 시간: ${movieInfo.duration}분</p>
-			<p>개봉일: </p>
+			<p><b>감독:</b> ${movieInfo.directors}</p>
+			<p><b>배우:</b> ${movieInfo.actors }</p>
+			<p><b>장르:</b> ${movieInfo.genre} </p>
+			<p><b>상영 시간:</b> ${movieInfo.duration}분</p>
+			<p><b>개봉일:</b> ${movieInfo.date}</p>
 		</div>
 		<!-- btn btn-primary는 Bootstrap 스타일이다. (네이티브 버튼처럼 보임) -->
 		<a href="#" class="btn btn-primary">예매하기</a>
 	</div>
 	<div class="movie_description">
-		<p> ${movieInfo.description}
+		<p> ${movieInfo.description}</p>
 	</div>
 	
 	<div class="movie_review">

@@ -36,6 +36,14 @@ public class ReviewController extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		
 		
+		// DB에서 영화 정보를 가져와서, 해당 영화의 상세정보를 가져온다.
+	    String movie_id_string = request.getParameter("movie_id");
+	    if(movie_id_string == null) {
+	    	System.out.println("movie_id를 받아오지 못했습니다.");
+	    	return;
+	    }
+	    int movie_id = Integer.parseInt(movie_id_string);
+	    
 		// 리뷰 작업을 한 다음, 다시 영화 상세페이지로 돌아가야하므로 dispatcher는 모두 동일하게 설정
 	    switch(request.getParameter("action")) {
     		// 사용자가 작성한 review 글 수정 작업 (본인이 쓴 글인지 확인해야함)
@@ -45,6 +53,8 @@ public class ReviewController extends HttpServlet {
     		// 사용자가 작성한 review 글 삭제 작업 (본인이 쓴 글인지 확인해야함)
 	    	case "delete":   
 	    		deleteFunc(request, response);
+	    	    // 해당 영화 리뷰 포인트 업데이트
+	    	    reviewService.updateReviewPoint(movie_id);
 	    		break;
 	    	// 각 review에 좋아요/싫어요 누르기 (둘 중 한번에 하나만 누를 수 있음)
 	    	case "like":
@@ -56,13 +66,7 @@ public class ReviewController extends HttpServlet {
 	    }
 	    
 	    // 각 작업이 끝나고 나서 예외가 없었다면, 영화 상세페이지로 다시 돌아간다.
-	    // DB에서 영화 정보를 가져와서, 해당 영화의 상세정보를 가져온다.
-	    String movie_id_string = request.getParameter("movie_id");
-	    if(movie_id_string == null) {
-	    	System.out.println("movie_id를 받아오지 못했습니다.");
-	    	return;
-	    }
-	    int movie_id = Integer.parseInt(movie_id_string);
+	    
 	    Map<String, Object> movieInfo = reviewService.getMovieInfo(movie_id);
 	    request.setAttribute("movieInfo", movieInfo);
 	    
@@ -78,11 +82,16 @@ public class ReviewController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
     	// 사용자가 작성한 review 글 DB에 저장 후 해당 리뷰 아래에 추가해주기
-		registerFunc(request, response);
+		if(!registerFunc(request, response)) {
+			return;
+		}
 		
 	    // 각 작업이 끝나고 나면, 영화 상세페이지로 다시 돌아간다.
 	    // DB에서 영화 정보를 가져와서, 해당 영화의 상세정보를 가져온다.
 	    int movie_id = Integer.parseInt(request.getParameter("movie_id"));
+	    // 해당 영화 리뷰 포인트 업데이트
+	    reviewService.updateReviewPoint(movie_id);
+	    
 	    Map<String, Object> movieInfo = reviewService.getMovieInfo(movie_id);
 	    request.setAttribute("movieInfo", movieInfo);
 	    
@@ -95,13 +104,13 @@ public class ReviewController extends HttpServlet {
 	}
 
 	// 사용자가 작성한 review 글 DB에 저장 후 해당 리뷰 아래에 추가해주기
-	private void registerFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private boolean registerFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 만약 로그인된 상태라면, 현재 세션에 저장된 사용자 아이디를 가져와서 "이름", "class", "email"값을 가져와서 request에 넣어준다.
 		HttpSession session = request.getSession(false); // false 인자값으로 주면, 해당 세션이 없을 경우 null 반환
 		// 로그인되지 않은 상태면 로그인 페이지로 보낸다.
 		if(session == null || session.getAttribute("loginUser") == null) {
 			response.sendRedirect("LoginController");
-			return;
+			return false;
 		}
 		
 		// 로그인된 상태라면, email값을 가져와서 user 정보를 가져온다.
@@ -128,7 +137,7 @@ public class ReviewController extends HttpServlet {
 		if(!reviewService.createReviewReaction(user_id, review_id)) {
 			System.out.println("ReviewController/registerFunc() -> 새로운 리엑션 추가하기 실패");
 		}
-		
+		return true;
 	}
 	
 	// 사용자가 작성한 review 글 수정 작업 (본인이 쓴 글인지 확인해야함)
@@ -171,9 +180,9 @@ public class ReviewController extends HttpServlet {
 		// 본인이 작성한 글이 아닌 경우, 알림창을 띄워준다.
 		if(user_id != user.getUserId()) {
 			request.setAttribute("errorScript", "<script>alert('본인이 작성한 글만 삭제할 수 있습니다!');</script>");
-		} else { // 본인이 작성한 글인 경우, 해당 리뷰글을 삭제한다.
+		} else { // 본인이 작성한 글인 경우, 해당 리뷰반응 객체와 리뷰글을 삭제한다.
 			int review_id = Integer.parseInt(request.getParameter("review_id"));
-			if(!reviewService.deleteReview(review_id)) {
+			if(!reviewService.deleteReviewReaction(user_id, review_id) || !reviewService.deleteReview(review_id)) {
 				System.err.println("ReviewController/deleteFunc() -> 리뷰 지우기 실패");
 			}
 		}
@@ -197,24 +206,23 @@ public class ReviewController extends HttpServlet {
 		
 		// 로그인된 상태라면, user 정보를 가져온다.
 		Map<String, Object> reviewReactionInfo = reviewService.getReviewReactionInfo(user_id, review_id);
-		if(reviewReactionInfo != null) {
-			int reviewReaction_id = (int)reviewReactionInfo.get("reviewReaction_id");
-			int reactionType = (int)reviewReactionInfo.get("reactionType");
-			switch(reactionType) {
-				case 0: // 아직 선택되지 않은 리뷰인 경우, 해당 리뷰 좋아요 증가 설정
-					reviewService.setReviewLikeInfo(reviewReaction_id, review_id, 1);
-					break;
-				case 1: // 좋아요가 선택된 리뷰인 경우, 해당 리뷰 좋아요 감소 설정
-					reviewService.setReviewLikeInfo(reviewReaction_id, review_id, 2);
-					break;
-				case 2: // 싫어요가 선택된 리뷰인 경우
-					request.setAttribute("errorScript", "<script>alert('이미 좋아요를 눌렀습니다!');</script>");
-					break;
-			}	
-		}else {
-			System.out.println("ReviewController/likeFunc() ->  reviewReactionInfo 가져오기 실패");
+		if(reviewReactionInfo == null) {// 리액션 정보가 없으면, 해당 정보 생성
+			reviewService.createReviewReaction(user_id, review_id);
+			reviewReactionInfo = reviewService.getReviewReactionInfo(user_id, review_id);
 		}
-		
+		int reviewReaction_id = (int)reviewReactionInfo.get("reviewReaction_id");
+		int reactionType = (int)reviewReactionInfo.get("reactionType");
+		switch(reactionType) {
+			case 0: // 아직 선택되지 않은 리뷰인 경우, 해당 리뷰 좋아요 증가 설정
+				reviewService.setReviewLikeInfo(reviewReaction_id, review_id, 1);
+				break;
+			case 1: // 좋아요가 선택된 리뷰인 경우, 해당 리뷰 좋아요 감소 설정
+				reviewService.setReviewLikeInfo(reviewReaction_id, review_id, 2);
+				break;
+			case 2: // 싫어요가 선택된 리뷰인 경우
+				request.setAttribute("errorScript", "<script>alert('이미 싫어요를 눌렀습니다!');</script>");
+				break;
+		}
 		
 	}
 	
@@ -235,6 +243,10 @@ public class ReviewController extends HttpServlet {
 		
 		// 로그인된 상태라면, user 정보를 가져온다.
 		Map<String, Object> reviewReactionInfo = reviewService.getReviewReactionInfo(user_id, review_id);
+		if(reviewReactionInfo == null) {// 리액션 정보가 없으면, 해당 정보 생성
+			reviewService.createReviewReaction(user_id, review_id);
+			reviewReactionInfo = reviewService.getReviewReactionInfo(user_id, review_id);
+		}
 		int reviewReaction_id = (int)reviewReactionInfo.get("reviewReaction_id");
 		int reactionType = (int)reviewReactionInfo.get("reactionType");
 		switch(reactionType) {
@@ -242,7 +254,7 @@ public class ReviewController extends HttpServlet {
 				reviewService.setReviewUnlikeInfo(reviewReaction_id, review_id, 1);
 				break;
 			case 1: // 좋아요가 선택된 리뷰인 경우
-				request.setAttribute("errorScript", "<script>alert('이미 싫어요를 눌렀습니다!');</script>");
+				request.setAttribute("errorScript", "<script>alert('이미 좋아요를 눌렀습니다!');</script>");
 				break;
 			case 2: // 싫어요가 선택된 리뷰인 경우, 해당 리뷰 싫어요 감소 설정
 				reviewService.setReviewUnlikeInfo(reviewReaction_id, review_id, 2);

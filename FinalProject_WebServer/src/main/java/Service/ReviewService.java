@@ -44,6 +44,9 @@ public class ReviewService {
 		return reviewRepository.createReviewReaction(user_id, review_id);
 	}
 	
+	public boolean deleteReviewReaction(int user_id, int review_id) {
+		return reviewRepository.deleteReviewReaction(user_id, review_id);
+	}
 	
 	// 해당 리뷰의 리액션 정보를 가져오는 함수
 	public Map<String, Object> getReviewReactionInfo(int user_id, int review_id){
@@ -60,5 +63,11 @@ public class ReviewService {
 	// type  ->  1: 싫어요 증가 / 2: 싫어요 감소
 	public void setReviewUnlikeInfo(int reviewReaction_id, int review_id, int type) {
 		reviewRepository.setReviewUnlikeInfo(reviewReaction_id, review_id, type);
+	}
+	
+	
+	// 해당 영화의 리뷰 포인트를 업데이트 하는 함수
+	public boolean updateReviewPoint(int movie_id) {
+		return reviewRepository.updateReviewPoint(movie_id);		
 	}
 }

@@ -48,7 +48,7 @@ public class DBUtil {
 			String checkSql = "SELECT COUNT(*) FROM `Movie` WHERE title = ?";
 			PreparedStatement checkStmt = con.prepareStatement(checkSql);
 
-			String insertSql = "INSERT INTO `Movie`(title, genre, duration, description, poster_url) VALUES (?, ?, ?, ?, ?)";
+			String insertSql = "INSERT INTO `Movie`(title, genre, duration, directors, actors, target_date, description, poster_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement insertStmt = con.prepareStatement(insertSql);
 			
 			for(int i=0; i<dailyBoxOfficeList.size(); ++i) {
@@ -80,7 +80,7 @@ public class DBUtil {
 			    if (rs.next()) count = rs.getInt(1);
 			    
 			    System.out.print("영화 이름: " + dailyBoxOffice.get("movieNm"));
-			    if (count == 0) {
+			    if (count == 0) { // Movie 테이블에 해당 영화가 없는 경우.
 			    	System.out.println(" -> Movie에 없음. DB에 추가 ");
 			        // 영화 코드로 상세정보를 가져오기 위해서는 movieCd 필요
 			        String movieCd = (String) dailyBoxOffice.get("movieCd");
@@ -93,31 +93,59 @@ public class DBUtil {
 			            System.out.println("movieInfo 조회 실패 → " + movieCd);
 			            continue;
 			        }
+			        // 영화 이름, 장르, 상영시간, 감독, 배우, 개봉일
 			        String movieNm = (String) movieInfo.get("movieNm");
 		            List<Map<String, String>> genres = (List<Map<String, String>>) movieInfo.get("genres");
 		            String showTmStr = (String) movieInfo.get("showTm");
-
+		            List<Map<String, Object>> directors = (List<Map<String, Object>>) movieInfo.get("directors");
+		            List<Map<String, Object>> actors = (List<Map<String, Object>>) movieInfo.get("actors");
+		            
+		            
+		            // 1. 영화 이름
 		            insertStmt.setString(1, movieNm);
+		            // 2. 영화 장르
 		            insertStmt.setString(2, genres.isEmpty() ? null : genres.get(0).get("genreNm"));
+		            // 3. 영화 상영 시간
 		            if (showTmStr != null && !showTmStr.isEmpty()) {
 		                insertStmt.setInt(3, Integer.parseInt(showTmStr));
 		            } else {
 		                insertStmt.setNull(3, java.sql.Types.INTEGER);
 		            }
 
+		            // 4. 영화 감독들
+		            StringBuilder directorNames = new StringBuilder();
+		            for(Map<String, Object>director : directors) {
+		            	directorNames.append((String)director.get("peopleNm") +"  ");
+		            }
+		            insertStmt.setString(4, directorNames.toString());
+		            
+		            
+		            // 5. 영화 배우들
+		            StringBuilder actorNames = new StringBuilder();
+		            for(Map<String, Object>actor : actors) {
+		            	actorNames.append((String)actor.get("peopleNm") +"  ");
+		            }
+		            insertStmt.setString(5, actorNames.toString());
+		            
+		            
+		            // 6. 영화 개봉일
+		            insertStmt.setString(6, openDt);
+		            
+		            
+		            // 영화 설명, 포스터 url
 		            String description=null, poster_url=null;
 					// TmdbAPIUtil에서 영화 설명, 포스터 url 가져와서 설정
 					movieInfo = TmdbAPIUtil.getMovieInfo(movieNm);
 					if(movieInfo != null) {
-						// 4. 영화 설명
+						// 7. 영화 설명
 						description = (String)movieInfo.get("overview"); 
-						// 5. 영화 포스터 url
+						// 8. 영화 포스터 url
 						poster_url = (String)movieInfo.get("poster_path");	
 					}
 					
 					// 설명, 포스터 url 설정
-					insertStmt.setString(4, description);
-					insertStmt.setString(5, poster_url);
+					insertStmt.setString(7, description);
+					insertStmt.setString(8, poster_url);
 					
 		            insertStmt.executeUpdate();
 		            System.out.println("Movie 테이블에 추가된 영화: " + movieNm);
@@ -145,7 +173,7 @@ public class DBUtil {
 			
 			
 			// 해당 영화 데이터를 Movie Table에 넣기 위한 sql문
-			String sql = "INSERT INTO `Movie`(title, genre, duration, description, poster_url) VALUES (?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO `Movie`(title, genre, duration, directors, actors, target_date, description, poster_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			
 			Map<String, Object> movieData=null, movieInfo=null;
@@ -165,8 +193,11 @@ public class DBUtil {
 					movieInfo = KoficAPIUtil.getMovieInfo((String)movieData.get("movieCd"));
 					// 1. 영화 이름
 					String movieNm = (String)movieInfo.get("movieNm");
+					pstmt.setString(1, movieNm);
 					// 2. 영화 장르 리스트
 					List<Map<String,String>> genres = (List<Map<String, String>>)movieInfo.get("genres");
+					List<Map<String, Object>> directors = (List<Map<String, Object>>) movieInfo.get("directors");
+		            List<Map<String, Object>> actors = (List<Map<String, Object>>) movieInfo.get("actors");
 					// !!<< 장르에 따라 데베에 추가 X >>!! //
 					boolean keep = true;
 					for(int j=0; j<genres.size(); ++j) {
@@ -178,36 +209,69 @@ public class DBUtil {
 					if(!keep) continue;
 					
 					String genre = genres.isEmpty() ? null : genres.get(0).get("genreNm");
+					pstmt.setString(2, genres.isEmpty() ? null : genre);
+					
 					
 					// 3. 영화 상영 시간
 					String showTmStr = (String)movieInfo.get("showTm");
 					Integer showTm = 0;
-						
-						
-					// 영화 이름, 장르, 상영 시간 설정
-					pstmt.setString(1, movieNm);
-					pstmt.setString(2, genres.isEmpty() ? null : genre);
 					if(showTmStr !=null && !showTmStr.isEmpty()) { // 상영시간이 데이터에 없는 경우, 해당 데이터에 null값을 넣는 설정을 해줌
 						showTm = Integer.parseInt((String)movieInfo.get("showTm"));
 						pstmt.setInt(3, showTm);						
 					} else {
 						pstmt.setNull(3, java.sql.Types.INTEGER);
 					}
+						
+					// 4. 감독들					
+					StringBuilder directorNames = new StringBuilder();
+		            for(Map<String, Object>director : directors) {
+		            	directorNames.append((String)director.get("peopleNm") +"  ");
+		            }
+		            pstmt.setString(4, directorNames.toString());
+		            
+		            
+		            // 5. 영화 배우들
+		            StringBuilder actorNames = new StringBuilder();
+		            for(Map<String, Object>actor : actors) {
+		            	actorNames.append((String)actor.get("peopleNm") +"  ");
+		            }
+		            pstmt.setString(5, actorNames.toString());
+
+
+					// 6. 상영 시간
+		            String openDt = (String) movieInfo.get("openDt");
+		            if(openDt != null && !openDt.trim().isEmpty()) {
+		            	if (openDt.matches("\\d{4}-\\d{2}-\\d{2}")) {
+						    // 이미 yyyy-MM-dd 형식이면 바로 저장
+							pstmt.setDate(6, java.sql.Date.valueOf(openDt));
+						} else if (openDt.matches("\\d{8}")) {
+						    // yyyyMMdd → yyyy-MM-dd로 변환
+						    String formattedDate = openDt.substring(0, 4) + "-" + openDt.substring(4, 6) + "-" + openDt.substring(6);
+						    pstmt.setDate(6, java.sql.Date.valueOf(formattedDate));
+						} else {
+						    System.out.println("잘못된 날짜 형식: " + openDt);
+						    pstmt.setNull(6, java.sql.Types.DATE);
+						}	
+		            } else {
+		            	pstmt.setNull(6, java.sql.Types.DATE);
+		            }
+					 
 					
 					
+					// TMDB
 					String description=null, poster_url=null;
 					// TmdbAPIUtil에서 영화 설명, 포스터 url 가져와서 설정
 					movieInfo = TmdbAPIUtil.getMovieInfo(title);
 					if(movieInfo != null) {
-						// 4. 영화 설명
+						// 7. 영화 설명
 						description = (String)movieInfo.get("overview"); 
-						// 5. 영화 포스터 url
+						// 8. 영화 포스터 url
 						poster_url = (String)movieInfo.get("poster_path");	
 					}
 					
 					// 설명, 포스터 url 설정
-					pstmt.setString(4, description);
-					pstmt.setString(5, poster_url);
+					pstmt.setString(7, description);
+					pstmt.setString(8, poster_url);
 					
 					pstmt.executeUpdate();
 				} 

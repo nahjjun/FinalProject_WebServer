@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/MypageController")
 public class MypageController extends HttpServlet {
-	private UserRepository userRepository = new UserRepository();
+   private UserRepository userRepository = new UserRepository();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -24,9 +24,10 @@ public class MypageController extends HttpServlet {
         LoginUser loginUser = (LoginUser) session.getAttribute("loginUser");
 
         if (loginUser == null) {
-        	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/login.jsp");
-        	dispatcher.forward(request, response);
-        	// 로그인 안되어 있으면 로그인으로 보내기
+
+           RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/login.jsp");
+           dispatcher.forward(request, response);
+           // 로그인 안되어 있으면 로그인으로 보내기
             return;
         }
 
