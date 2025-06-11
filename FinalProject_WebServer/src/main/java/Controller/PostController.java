@@ -221,6 +221,7 @@ public class PostController extends HttpServlet {
                 comment.setPostId(Integer.parseInt(request.getParameter("postId")));
                 comment.setUserId(commentUser.getUserId());
                 comment.setContent(request.getParameter("content"));
+                comment.setCreatedAt(LocalDateTime.now());
                 commentService.saveComment(comment);
                 response.sendRedirect("PostController?action=view&postId=" + comment.getPostId());
                 break;

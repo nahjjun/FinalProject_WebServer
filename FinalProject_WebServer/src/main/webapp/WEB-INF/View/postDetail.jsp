@@ -21,6 +21,7 @@
     <span>조회수: ${post.viewCount}</span>
   </div>
 
+
   <c:if test="${post.imagePath != null}">
     <div class="post-detail-image">
       <img src="../resources/uploads/${post.imagePath}" alt="첨부 이미지" />
