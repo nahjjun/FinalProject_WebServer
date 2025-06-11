@@ -1,0 +1,158 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+
+.container {
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.theater-tabs {
+  display: flex;
+  gap: 10px;
+  background-color: #504747;
+  padding: 14px 10px;
+}
+
+.theater-tabs button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.theater-tabs button.selected {
+  color: #00aa00;
+  border-bottom: 2px solid #00aa00;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 28px;
+  margin: 30px 0 10px;
+  font-weight: bold;
+  border-top: 2px solid #222;
+  border-bottom: 2px solid #222;
+  padding: 10px 0;
+}
+
+.subtitle {
+  text-align: center;
+  color: #00aa00;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.date-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  border-top: 1px solid #00aa00;
+  border-bottom: 1px solid #00aa00;
+  padding: 10px 0;
+}
+
+.date-selector .day {
+  appearance: none;
+  outline: none;
+  border: 2px solid #00aa00;
+  background-color: white;
+  color: #00aa00;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 70px;
+  margin: 0 4px;
+  transition: all 0.2s;
+}
+
+.date-selector .selected {
+  background-color: #ccffcc;
+  color: #00aa00;
+  border-color: #00aa00;
+}
+
+.date-selector .arrow_left,
+.date-selector .arrow_right {
+  font-size: 22px;
+  border: none;
+  background: none;
+  color: #00aa00;
+  font-weight: bold;
+  padding: 0 10px;
+}
+
+
+
+.movieInfoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.movie-card {
+  border-top: 1px solid #00aa00;
+  padding-top: 20px;
+}
+
+.movie-title {
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #111;
+}
+
+.movie-info {
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.screen-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.screen-info div:first-child {
+  font-size: 14px;
+  color: #444;
+}
+
+.time-box {
+  background-color: #eeeeee;
+  padding: 3px 4px;
+  border-radius: 6px;
+  display: inline-block;
+  min-width: 50px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.1;
+}
+
+.time-text {
+  font-weight: bold;
+  display: block;
+}
+
+.seat-count {
+  font-size: 11px;
+  color: #888;
+  font-weight: normal;
+  display: block;
+}

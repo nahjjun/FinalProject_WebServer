@@ -23,9 +23,9 @@
 		      </ul>
 		    </li>
 		    <li>
-		      <a href="theater.jsp" class="menu-item">극장</a>
+		      <a href="TheaterController?theaterName=default" class="menu-item">극장</a>
 		      <ul>
-		        <li><a href="#">SGV 극장</a></li>
+		        <li><a href="TheaterController?theaterName=default">SGV 극장</a></li>
 		      </ul>
 		    </li>
 		    <li>
