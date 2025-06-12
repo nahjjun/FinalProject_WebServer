@@ -1,6 +1,7 @@
 package Entity;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Post {
     private int postId;
@@ -21,6 +22,11 @@ public class Post {
 	{
     	this.boardType = "free";
 	}
+
+    public String getFormattedCreatedAt() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return createdAt.format(formatter);
+    }
 
     public String getUserName() {
 		return userName;

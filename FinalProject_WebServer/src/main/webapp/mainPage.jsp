@@ -9,12 +9,15 @@
 <title>SKV</title>
 </head>
 <body>
-<%@ include file="header.jsp" %>
-<%@ include file="menu.jsp" %>
-<%@ include file = "topAdd.jsp" %>
-<%@ include file = "mainMovieChart.jsp" %>
+<div class="wrapper">
+  <%@ include file="header.jsp" %>
+  <%@ include file="menu.jsp" %>
+  <%@ include file="topAdd.jsp" %>
+  <%@ include file="mainMovieChart.jsp" %>
 
-<%@ include file="footer.jsp" %> 
+
+  <%@ include file="footer.jsp" %> 
+</div>
 </body>
 <script src="./resources/js/videoControl.js"></script>
 </html>	

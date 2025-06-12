@@ -10,6 +10,7 @@ import Util.PasswordUtil;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -63,8 +64,29 @@ public class LoginController extends HttpServlet {
             dispatcher.forward(request, response);
          } else {
             System.out.println("로그인 성공!");
-            // 로그인 성공 시, 세션에 사용자 정보를 저장한다.
-            HttpSession session = request.getSession();
+            
+         //  이메일 저장 쿠키
+            String remember = request.getParameter("remember");
+            if ("on".equals(remember)) {
+               Cookie emailCookie = new Cookie("savedEmail", email);
+               emailCookie.setMaxAge(60 * 60 * 24 * 30); // 30일
+               emailCookie.setPath("/");
+               response.addCookie(emailCookie);
+            } else {
+               Cookie emailCookie = new Cookie("savedEmail", null);
+               emailCookie.setMaxAge(0);
+               emailCookie.setPath("/");
+               response.addCookie(emailCookie);
+            }
+
+            //  자동 로그인 쿠키
+            String autoLogin = request.getParameter("autoLogin");
+            if ("on".equals(autoLogin)) {
+               Cookie autoCookie = new Cookie("autoLogin", email);
+               autoCookie.setMaxAge(60 * 60 * 24 * 7); // 7일 유지
+               autoCookie.setPath("/");
+               response.addCookie(autoCookie);
+            }
             
             // 사용자 정보를 불러옴
             Map<String, Object> userInfo = loginService.getUserInfo(email);
@@ -74,6 +96,8 @@ public class LoginController extends HttpServlet {
             
             
             LoginUser loginUser = new LoginUser(email, name, user_class, user_id);
+         // 로그인 성공 시, 세션에 사용자 정보를 저장한다.
+            HttpSession session = request.getSession();
             session.setAttribute("loginUser", loginUser);
             
             response.sendRedirect("MainPageController");

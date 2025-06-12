@@ -14,6 +14,7 @@
   	<title>상영 정보</title>
 </head>
 <body>
+<div class="wrapper">
 	<%@ include file="/header.jsp" %>
 	<%@ include file="/menu.jsp" %>
 	
@@ -47,5 +48,6 @@
   
   	<%@ include file="/footer.jsp" %>
 	<p>${errorScript}
+</div>
 </body>
 </html>

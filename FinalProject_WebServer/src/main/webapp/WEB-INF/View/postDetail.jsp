@@ -17,7 +17,7 @@
   <div class="post-title">${post.title}</div>
   <div class="post-detail-meta">
     <span>작성자: ${post.userName}</span>
-    <span>작성일: ${post.createdAt}</span>
+    <span>작성일: ${post.formattedCreatedAt}</span>
     <span>조회수: ${post.viewCount}</span>
   </div>
 
