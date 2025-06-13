@@ -30,6 +30,15 @@
 
   <div class="post-detail-content">${post.content}</div>
 
+	<%-- 본인 글일 때만 수정/삭제 버튼 노출 --%>
+	<c:if test="${sessionScope.loginUser != null && sessionScope.loginUser.userId == post.userId}">
+	  <div style="text-align: right; margin-top: 10px;">
+	    <a href="PostController?action=edit&postId=${post.postId}" class="btn btn-warning">수정</a>
+	    <a href="PostController?action=delete&postId=${post.postId}" class="btn btn-danger" 
+	       onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+	  </div>
+	</c:if>
+	
   <div style="text-align: right;">
     <a href="PostController?category=${post.boardType}" class="btn btn-secondary">목록으로</a>
   </div>
@@ -61,6 +70,32 @@
             <button type="submit">❤️ ${comment.goodNum}</button>
           </form>
 
+		<c:if test="${sessionScope.loginUser != null && sessionScope.loginUser.userId == comment.userId}">
+		  <div class="comment-owner-actions" style="margin-top: 5px;">
+		    <!-- 수정 버튼 -->
+		    <button type="button" class="btn btn-sm btn-outline-primary toggle-edit" data-comment-id="${comment.commentId}">
+		      수정
+		    </button>
+		
+		    <!-- 수정 폼: 처음엔 숨겨져 있음 -->
+		    <form action="PostController" method="get" class="edit-form" id="edit-form-${comment.commentId}" style="display:none; margin-top:5px;">
+		      <input type="hidden" name="action" value="edit_comment" />
+		      <input type="hidden" name="commentId" value="${comment.commentId}" />
+		      <input type="hidden" name="postId" value="${post.postId}" />
+		      <input type="text" name="newContent" value="${comment.content}" required />
+		      <button type="submit" class="btn btn-sm btn-primary">확인</button>
+		    </form>
+		
+		    <!-- 삭제 버튼 -->
+		    <form action="PostController" method="get" style="display:inline;">
+		      <input type="hidden" name="action" value="delete_comment" />
+		      <input type="hidden" name="commentId" value="${comment.commentId}" />
+		      <input type="hidden" name="postId" value="${post.postId}" />
+		      <button type="submit" class="btn btn-sm btn-danger"
+		              onclick="return confirm('댓글을 삭제하시겠습니까?');">삭제</button>
+		    </form>
+		  </div>
+		</c:if>
 	
           <form action="PostController" method="get">
             <input type="hidden" name="action" value="dislike_comment" />
@@ -75,7 +110,7 @@
 </div>
 
 
-
+<script src="../resources/js/comment.js"></script>
 <%@ include file="/footer.jsp" %>
 </body>
 </html>
