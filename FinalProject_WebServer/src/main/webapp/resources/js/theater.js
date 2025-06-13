@@ -14,21 +14,21 @@ function arrow_right(){
 		prevBtn.dataset.date = btn.dataset.date;
 	}
 	// 마지막 날짜를 현재 첫번째 요소에서 7일 후로 설정한다
-	const firstDateStr = dayButtons[0].value; // 
-	const firstDate = new Date(firstDateStr);
-	const lastDate = new Date(firstDate); // 7일차 설정
-	lastDate.setDate(firstDate.getDate() + 6);
+	const firstDateStr = dayButtons[0].dataset.date; // 
+	let [year, month, date] = firstDateStr.split("-");
+	const lastDate = new Date(year, month - 1, date); // JS는 month가 0부터 시작!
+	lastDate.setDate(lastDate.getDate() + 6);
 	const lastBtn = dayButtons[6];
 	
-	const year = lastDate.getFullYear();
-	const month = String(lastDate.getMonth()+1).padStart(2, "0"); // 2글자로 범위를 정하고, 남은 부분은 padding을 앞에서부터 "0"으로 채운다.
-	const date = String(lastDate.getDate()).padStart(2, "0"); // 2글자로 범위를 정하고, 남은 부분은 padding을 앞에서부터 "0"으로 채운다.
+	const y = lastDate.getFullYear();
+	const m = String(lastDate.getMonth()+1).padStart(2, "0"); // 2글자로 범위를 정하고, 남은 부분은 padding을 앞에서부터 "0"으로 채운다.
+	const d = String(lastDate.getDate()).padStart(2, "0"); // 2글자로 범위를 정하고, 남은 부분은 padding을 앞에서부터 "0"으로 채운다.
 	const day = korDay[lastDate.getDay()];
 	
-	const formatted = `${month}/${date}(${day})`;
+	const formatted = `${m}/${d}(${day})`;
 	
 	lastBtn.value = formatted;
-	lastBtn.dataset.date = `${year}-${month}-${date}`;
+	lastBtn.dataset.date = `${y}-${m}-${d}`;
 }
 
 // 오른쪽 버튼
@@ -46,21 +46,21 @@ function arrow_left(){
 		btn.dataset.date = prevBtn.dataset.date;
 	}
 	// 마지막 날짜를 현재 첫번째 요소에서 7일 후로 설정한다
-	const lastDateStr = dayButtons[6].value; // 
-	const lastDate = new Date(lastDateStr);
-	const firstDate = new Date(lastDate); // 첫날 설정
-	firstDate.setDate(lastDate.getDate()-6);
+	const lastDateStr = dayButtons[6].dataset.date; //
+	let [year, month, date] = lastDateStr.split("-");
+	const firstDate = new Date(year, month - 1, date); // JS는 month가 0부터 시작! 
+	firstDate.setDate(firstDate.getDate()-6);
 	const firstBtn = dayButtons[0];
 
-	const year = firstDate.getFullYear();
-	const month = String(firstDate.getMonth()+1).padStart(2, "0"); // 2글자로 범위를 정하고, 남은 부분은 padding을 앞에서부터 "0"으로 채운다.
-	const date = String(firstDate.getDate()).padStart(2, "0"); // 2글자로 범위를 정하고, 남은 부분은 padding을 앞에서부터 "0"으로 채운다.
+	const y = firstDate.getFullYear();
+	const m = String(firstDate.getMonth()+1).padStart(2, "0"); // 2글자로 범위를 정하고, 남은 부분은 padding을 앞에서부터 "0"으로 채운다.
+	const d = String(firstDate.getDate()).padStart(2, "0"); // 2글자로 범위를 정하고, 남은 부분은 padding을 앞에서부터 "0"으로 채운다.
 	const day = korDay[firstDate.getDay()];
 
-	const formatted = `${month}/${date}(${day})`;
+	const formatted = `${m}/${d}(${day})`;
 
 	firstBtn.value = formatted;
-	firstBtn.dataset.date = `${year}-${month}-${date}`;
+	firstBtn.dataset.date = `${y}-${m}-${d}`;
 }
 
 // day 버튼들을 누르면 해당 값이 서버에게 넘어가서 날짜별 영화 상영 데이터들을 새롭게 가져와 화면을 다시 보이게 하도록 하는 
@@ -73,11 +73,14 @@ function addActionListenerToDays() {
 			const screeningDate = btn.dataset.date;
 			const theaterName = document.getElementById("selectedTheaterName").value;
 
+			const encodedTheaterName = encodeURIComponent(theaterName);
+			const encodedScreeningDate = encodeURIComponent(screeningDate);
+			
 			// 현재 선택된 날짜 버튼에 selected 클래스 부여
 		    dayButtons.forEach(b => b.classList.remove("selected")); // 모두 제거
 			btn.classList.add("selected");
 			
-			fetch(`TheaterController?theaterName=${theaterName}&screeningDate=${screeningDate}`, {
+			fetch(`TheaterController?theaterName=${encodedTheaterName}&screeningDate=${encodedScreeningDate}`, {
 				method:"GET",
 				headers: {
 					"X-Requested-With": "XMLHttpRequest"

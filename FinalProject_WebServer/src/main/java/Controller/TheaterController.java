@@ -34,6 +34,8 @@ public class TheaterController extends HttpServlet {
         String theaterName = request.getParameter("theaterName");
         String screeningDateStr = request.getParameter("screeningDate");
 
+        System.out.println("theaterName: " + theaterName);
+        System.out.println("screeningDateStr: " + screeningDateStr);
         // 날짜가 null이면 오늘 날짜로 설정
     	if (screeningDateStr == null || screeningDateStr.isEmpty()) {
     	    LocalDate today = LocalDate.now();
