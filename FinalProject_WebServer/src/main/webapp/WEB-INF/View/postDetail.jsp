@@ -30,7 +30,7 @@
 
   <div class="post-detail-content">${post.content}</div>
 
-	<%-- 본인 글일 때만 수정/삭제 버튼 노출 --%>
+	<!-- 본인 글일 때만 수정/삭제 버튼 노출 -->
 	<c:if test="${sessionScope.loginUser != null && sessionScope.loginUser.userId == post.userId}">
 	  <div style="text-align: right; margin-top: 10px;">
 	    <a href="PostController?action=edit&postId=${post.postId}" class="btn btn-warning">수정</a>
@@ -69,6 +69,13 @@
             <input type="hidden" name="postId" value="${post.postId}" />
             <button type="submit">❤️ ${comment.goodNum}</button>
           </form>
+          
+          <form action="PostController" method="get">
+            <input type="hidden" name="action" value="dislike_comment" />
+            <input type="hidden" name="commentId" value="${comment.commentId}" />
+            <input type="hidden" name="postId" value="${post.postId}" />
+            <button type="submit">👎 ${comment.badNum}</button>
+          </form>
 
 		<c:if test="${sessionScope.loginUser != null && sessionScope.loginUser.userId == comment.userId}">
 		  <div class="comment-owner-actions" style="margin-top: 5px;">
@@ -78,7 +85,7 @@
 		    </button>
 		
 		    <!-- 수정 폼: 처음엔 숨겨져 있음 -->
-		    <form action="PostController" method="get" class="edit-form" id="edit-form-${comment.commentId}" style="display:none; margin-top:5px;">
+		    <form action="PostController" method="post" class="edit-form" id="edit-form-${comment.commentId}" style="display:none; margin-top:5px;">
 		      <input type="hidden" name="action" value="edit_comment" />
 		      <input type="hidden" name="commentId" value="${comment.commentId}" />
 		      <input type="hidden" name="postId" value="${post.postId}" />
@@ -97,20 +104,13 @@
 		  </div>
 		</c:if>
 	
-          <form action="PostController" method="get">
-            <input type="hidden" name="action" value="dislike_comment" />
-            <input type="hidden" name="commentId" value="${comment.commentId}" />
-            <input type="hidden" name="postId" value="${post.postId}" />
-            <button type="submit">👎 ${comment.badNum}</button>
-          </form>
+     
         </div>
       </div>
     </c:forEach>
   </div>
 </div>
-
-
-<script src="../resources/js/comment.js"></script>
 <%@ include file="/footer.jsp" %>
+<script src="./resources/js/comment.js"></script>
 </body>
 </html>

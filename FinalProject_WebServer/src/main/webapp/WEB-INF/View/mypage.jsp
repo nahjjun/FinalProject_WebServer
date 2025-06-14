@@ -20,15 +20,13 @@
   
   <!-- 세로 메뉴바 -->
   <div class="mypage-sidebar">
-  <ul class="menu-category">
-    <li class="menu-title">회원정보</li>
-    <li class="submenu-item"><a href="javascript:void(0);" onclick="openModal()">개인정보 설정</a></li>
-	<li class="submenu-item"><a href="javascript:void(0);" onclick="openProfileModal()">프로필 수정하기</a></li>
-     <li class="submenu-item"><a href="javascript:void(0);" onclick="openDeleteModal()">회원탈퇴</a></li>
-
-      <li class="menu-title"><a href="#" class="menu-link">내가 본 영화</a></li>
-    </ul>
-  </div>
+	  <ul class="menu-category">
+	    <li class="menu-title">회원정보</li>
+	    <li class="submenu-item"><a href="javascript:void(0);" onclick="openModal()">개인정보 설정</a></li>
+		<li class="submenu-item"><a href="javascript:void(0);" onclick="openProfileModal()">프로필 수정하기</a></li>
+	    <li class="submenu-item"><a href="javascript:void(0);" onclick="openDeleteModal()">회원탈퇴</a></li>
+	   </ul>
+	</div>
 
 
 	    <!-- 오른쪽 메인 콘텐츠 -->
@@ -83,10 +81,8 @@
 	<%@ include file="editModal.jsp" %> 
 	<%@ include file="profileEditModal.jsp" %> 
 	<%@ include file="deleteModal.jsp" %>
-	
-
-	  <%@ include file="/footer.jsp" %>
-	  <script src="./resources/js/modal.js"></script> 
+	<%@ include file="/footer.jsp" %>
+	 <script src="./resources/js/modal.js"></script> 
 </div>
 </body>
 </html>

@@ -208,6 +208,14 @@ public class PostController extends HttpServlet {
                 // 리다이렉트
                 response.sendRedirect("PostController?action=view&postId=" + updatedPost.getPostId());
                 break;
+                
+            case "edit_comment":
+                int editCommentId = Integer.parseInt(request.getParameter("commentId"));
+                String newContent = request.getParameter("newContent");
+                commentService.updateComment(editCommentId, newContent);
+                response.sendRedirect("PostController?action=view&postId=" + request.getParameter("postId"));
+                break;
+
 
             case "comment":
                 HttpSession commentSession = request.getSession();

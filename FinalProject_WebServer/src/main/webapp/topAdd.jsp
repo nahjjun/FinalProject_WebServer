@@ -21,7 +21,7 @@
   <div class="sgv-banner-text">
     <h1>브링 허 백</h1>
     <p>A24 최고 흥행 &lt;톡 투 미&gt; 감독 작품<br>6월 6일 SKV 단독 개봉</p>
-    <a href="movie.jsp" class="sgv-detail-btn">상세보기</a>
+    <a href="MovieController?action=movieDetail&movie_id=437" class="sgv-detail-btn">상세보기</a>
     <button id="playBtn" onclick="togglePlay()">정지하기 ⏸</button>
     <button id="muteBtn" onclick="toggleMute()">음소거 🔇</button>
 

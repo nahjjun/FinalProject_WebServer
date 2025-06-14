@@ -1,40 +1,47 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
-import Entity.LoginUser;
-import Util.KoficAPIUtil;
+import Service.MovieService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/MainPageController")
 public class MainPageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	
-    public MainPageController() {
-        super();
-        
-    }
+	private MovieService movieService = new MovieService();
 
-	// 메인 페이지 보내주는 함수
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html; charset=UTF-8"); 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/mainPage.jsp");;
+	public MainPageController() {
+		super();
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html; charset=UTF-8");
+
+		// ✅ 무비차트 데이터 가져오기
+		List<Map<String, Object>> boxOfficeList = movieService.getBoxOfficeList();
+		boxOfficeList.sort((m1, m2) -> (int) m1.get("rank") - (int) m2.get("rank"));
+		request.setAttribute("boxOfficeList", boxOfficeList);
+
+		// ✅ 로그아웃 알림 체크
 		String logout = request.getParameter("logout");
-		if("1".equals(logout)) { // 로그아웃 된 상태라면 알림창 보내기 (null exception을 일으키지 않기 위해 "1".equals() 형태로 사용함 
+		if ("1".equals(logout)) {
 			request.setAttribute("errorScript", "<script>alert('로그아웃 되었습니다!');</script>");
 		}
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/mainPage.jsp");
 		dispatcher.forward(request, response);
 	}
 
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 	}
-
 }
