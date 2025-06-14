@@ -167,6 +167,30 @@ public class PostRepository {
             e.printStackTrace();
         }
     }
+    //유저 아이디로 글 갖고와야해
+    public List<Post> findByUserId(int userId) {
+        List<Post> list = new ArrayList<>();
+        String sql = "SELECT * FROM Post WHERE user_id = ? ORDER BY created_at DESC";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Post post = new Post();
+                post.setPostId(rs.getInt("post_id"));
+                post.setTitle(rs.getString("title"));
+                post.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                post.setViewCount(rs.getInt("view_count"));
+                list.add(post);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
 
 

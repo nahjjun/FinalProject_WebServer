@@ -11,6 +11,7 @@
   	<script type="text/javascript"  src="./resources/js/movieDetail.js"></script>
 </head>
 <body>
+
 	<%@ include file="/header.jsp" %>
 	<%@ include file="/menu.jsp" %>
 	

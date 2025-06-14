@@ -1,6 +1,7 @@
 package Dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class PostDto {
 
@@ -12,6 +13,10 @@ public class PostDto {
 	    private LocalDateTime createdAt;
 	    private int viewCount;
 
+	    public String getFormattedCreatedAt() {
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+	        return createdAt.format(formatter);
+	    }
 
 	    public int getDisplayNumber() { return displayNumber; }
 	    public void setDisplayNumber(int displayNumber) { this.displayNumber = displayNumber; }

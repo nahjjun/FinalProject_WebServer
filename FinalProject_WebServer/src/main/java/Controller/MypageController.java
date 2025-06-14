@@ -1,9 +1,12 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import Entity.LoginUser;
+import Entity.Post;
 import Entity.User;
+import Repository.PostRepository;
 import Repository.UserRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -15,6 +18,7 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/MypageController")
 public class MypageController extends HttpServlet {
+	private PostRepository postRepository = new PostRepository();
    private UserRepository userRepository = new UserRepository();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -45,8 +49,14 @@ public class MypageController extends HttpServlet {
             user.setProfileImage("기본프로필.png");
         }
         
+        
         request.setAttribute("user", user);
 
+        int userId = loginUser.getUserId();
+
+        List<Post> myPosts = postRepository.findByUserId(userId);
+        request.setAttribute("myPosts", myPosts);
+        
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/mypage.jsp");
         dispatcher.forward(request, response);
 

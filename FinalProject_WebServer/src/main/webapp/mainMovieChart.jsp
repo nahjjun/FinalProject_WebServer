@@ -7,24 +7,35 @@
 <title>메인무비페이지</title>
 </head>
 <body>
-	<div class="movie-slider-wrapper mt-5">
-	  <button class="scroll-btn left">&lt;</button>
-	
-	  <div class="movie-slider" id="movieSlider">
-	    <c:forEach var="movie" items="${boxOfficeList}">
-	      <div class="movie-card-horizontal">
-	        <img src="${movie.get('poster_url')}" alt="포스터" class="movie-img" />
-	        <h5>${movie.get("title")}</h5>
-	        <p>개봉일: ${movie.get("date")}</p>
-	        <a href="#" class="btn">예매하기</a>
-	        <a href="MovieController?action=movieDetail" class="btn">상세정보</a>
-	      </div>
-	    </c:forEach>
-	  </div>
-	
-	  <button class="scroll-btn right">&gt;</button>
-	</div>
+	<div class="movie-slider-wrapper mt-5 px-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold">무비차트</h4>
+    <a href="MovieController?action=movieChart" class="btn btn-outline-success btn-sm">전체보기</a>
+  </div>
+
+  <div class="movie-slider d-flex overflow-auto" id="movieSlider">
+    <c:forEach var="movie" items="${boxOfficeList}">
+      <div class="card mx-2 movie-card shadow-sm" style="min-width: 200px; max-width: 200px;">
+        <div class="position-relative">
+          <span class="rank-badge">No.${movie.rank}</span>
+          <img src="${movie.poster_url}" class="card-img-top" alt="영화포스터"
+               onerror="this.onerror=null; this.src='./resources/images/default_poster.png';">
+        </div>
+        <div class="card-body d-flex flex-column p-2">
+          <h6 class="card-title mb-1">${movie.get("title")}</h6>
+          <small class="text-muted">⭐ ${movie.review_point}/5</small>
+          <small class="text-muted">개봉일: ${movie.get("date")}</small>
+          <div class="mt-2 d-flex flex-column gap-1">
+            <a href="#" class="btn btn-sm btn-outline-success">예매하기</a>
+            <a href="MovieController?action=movieDetail&movie_id=${movie.movie_id}" class="btn btn-sm btn-outline-success">상세정보</a>
+          </div>
+        </div>
+      </div>
+    </c:forEach>
+  </div>
+</div>
 
 <script src="./resources/js/movieSlider.js"></script>
+
 </body>
 </html>

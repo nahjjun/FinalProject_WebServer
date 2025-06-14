@@ -22,10 +22,6 @@
   <div class="container mt-5">
   <div class="movie-chart-header">
     <h2 class="fw-bold fs-3">무비차트</h2>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="onlyShowing">
-      <label class="form-check-label" for="onlyShowing">현재 상영작만 보기</label>
-    </div>
   </div>
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
@@ -51,12 +47,8 @@
 	      </div>
 	    </div>
 	   </c:forEach>
-    
   </div>
-  
 </div>
-
-
   <%@ include file="/footer.jsp" %>
 </body>
 </html>

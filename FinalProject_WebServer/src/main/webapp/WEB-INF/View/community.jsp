@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="resources/css/skvstyle.css" />
 </head>
 <body>
-
+<div class="wrapper">
 <%@ include file="/header.jsp" %>
 <%@ include file="/menu.jsp" %>
 
@@ -84,7 +84,7 @@
 		    <td class="author">
 		      <span class="author-badge">${post.userName}</span>
 		    </td>
-		    <td>${post.createdAt}</td>
+		    <td>${post.formattedCreatedAt}</td>
 		    <td>${post.viewCount}</td>
 		  </tr>
 		</c:forEach>
@@ -107,5 +107,6 @@
 
   </div>
 <%@ include file="/footer.jsp" %>
+</div>
 </body>
 </html>
