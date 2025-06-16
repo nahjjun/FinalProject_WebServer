@@ -70,4 +70,13 @@ public class ReviewService {
 	public boolean updateReviewPoint(int movie_id) {
 		return reviewRepository.updateReviewPoint(movie_id);		
 	}
+	
+	public Map<String, Object> getReviewById(int review_id) {
+	    return reviewRepository.findReviewById(review_id); 
+	}
+
+	public boolean updateReview(int review_id, String context, int rating) {
+	    return reviewRepository.updateReviewById(review_id, context, rating);
+	}
+
 }

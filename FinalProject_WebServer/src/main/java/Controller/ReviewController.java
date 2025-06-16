@@ -35,12 +35,21 @@ public class ReviewController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		
+		String action = request.getParameter("action");
+
+		// ✅ null 체크 먼저
+		if (action == null) {
+			System.out.println("[ReviewController] action 파라미터가 null입니다.");
+			response.sendRedirect("MainPageController"); 
+			return;
+		}
 		
 		// DB에서 영화 정보를 가져와서, 해당 영화의 상세정보를 가져온다.
 	    String movie_id_string = request.getParameter("movie_id");
 	    if(movie_id_string == null) {
 	    	System.out.println("movie_id를 받아오지 못했습니다.");
-	    	return;
+	    	response.sendRedirect("MainPageController");
+			return;
 	    }
 	    int movie_id = Integer.parseInt(movie_id_string);
 	    
@@ -62,7 +71,14 @@ public class ReviewController extends HttpServlet {
 	    		break;
 	    	case "dislike":
 	    		dislikeFunc(request, response);
+	    		break;	
+	    	case "editForm":
+	    		editFormFunc(request, response);
 	    		break;
+	    	default:
+				System.out.println("[ReviewController] 알 수 없는 action: " + action);
+				break;
+
 	    }
 	    
 	    // 각 작업이 끝나고 나서 예외가 없었다면, 영화 상세페이지로 다시 돌아간다.
@@ -81,7 +97,14 @@ public class ReviewController extends HttpServlet {
 	// register 작업(리뷰 등록)
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
-    	// 사용자가 작성한 review 글 DB에 저장 후 해당 리뷰 아래에 추가해주기
+    	
+		String action = request.getParameter("action");
+		if ("edit".equals(action)) {
+			editFunc(request, response);
+			return; // edit 작업 후는 여기서 종료
+		}
+		
+		// 사용자가 작성한 review 글 DB에 저장 후 해당 리뷰 아래에 추가해주기
 		if(!registerFunc(request, response)) {
 			return;
 		}
@@ -153,15 +176,28 @@ public class ReviewController extends HttpServlet {
 		// 2. 로그인된 상태라면, 해당 리뷰가 본인이 작성한 글과 동일한 글인지 확인한다.
 		LoginUser user = (LoginUser)session.getAttribute("loginUser");
 		int user_id = user.getUserId();
-		// 본인이 작성한 글이 아닌 경우, 알림창을 띄워준다.
-		if(user_id != user.getUserId()) {
-			request.setAttribute("errorScript", "<script>alert('본인이 작성한 글만 수정할 수 있습니다!');</script>");
-		} else { // 본인이 작성한 글인 경우, 
-			
-			
-		}
-		
-		
+		 // 파라미터 추출
+	    int review_id = Integer.parseInt(request.getParameter("review_id"));
+	    int movie_id = Integer.parseInt(request.getParameter("movie_id"));
+	    String newContext = request.getParameter("review_context");
+	    int newRating = Integer.parseInt(request.getParameter("rating"));
+	    
+	    // 해당 리뷰의 작성자와 현재 유저가 같은지 확인 (본인 리뷰인지 확인)
+	    Map<String, Object> reviewInfo = reviewService.getReviewById(review_id);
+	    int writerId = (int) reviewInfo.get("user_id");
+
+	    if (user_id != writerId) {
+	        request.setAttribute("errorScript", "<script>alert('본인이 작성한 글만 수정할 수 있습니다!');</script>");
+	        return;
+	    }
+	    
+	 // 리뷰 수정 처리
+	    boolean success = reviewService.updateReview(review_id, newContext, newRating);
+	    if (!success) {
+	        request.setAttribute("errorScript", "<script>alert('리뷰 수정에 실패했습니다.');</script>");
+	    }
+	 // 성공 시 상세 페이지로 리디렉션
+	    response.sendRedirect("ReviewController?movie_id=" + movie_id);
 	}
 	
 	// 사용자가 작성한 review 글 삭제 작업 (본인이 쓴 글인지 확인해야함)
@@ -262,6 +298,23 @@ public class ReviewController extends HttpServlet {
 		}
 		
 	}
+	
+	private void editFormFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		if (session == null || session.getAttribute("loginUser") == null) {
+			response.sendRedirect("LoginController");
+			return;
+		}
+
+		int review_id = Integer.parseInt(request.getParameter("review_id"));
+		Map<String, Object> review = reviewService.getReviewById(review_id); // 기존 리뷰 정보
+
+		request.setAttribute("editReview", review);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/editReviewForm.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	
 
 	
 }
