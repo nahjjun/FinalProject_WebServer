@@ -28,12 +28,12 @@
 		        <li><a href="TheaterController?theaterName=default">SGV 극장</a></li>
 		      </ul>
 		    </li>
-		    <!--  <li>
+		    <li>
 		      <a href="reservation.jsp" class="menu-item">예매</a>
 		      <ul>
 		        <li><a href="#">예매하기</a></li>
 		      </ul>
-		    </li> -->
+		    </li>
 		    <li>
 		      <a href="${pageContext.request.contextPath}/PostController" class="menu-item">게시판</a>
 		      <ul>
