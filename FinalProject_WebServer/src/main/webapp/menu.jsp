@@ -32,7 +32,6 @@
 		      <a href="reservation.jsp" class="menu-item">예매</a>
 		      <ul>
 		        <li><a href="#">예매하기</a></li>
-		        <li><a href="#">상영 스케줄</a></li>
 		      </ul>
 		    </li>
 		    <li>
