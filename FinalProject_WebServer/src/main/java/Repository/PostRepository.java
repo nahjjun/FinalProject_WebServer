@@ -139,7 +139,7 @@ public class PostRepository {
     }
     
     public void update(Post post) {
-        String sql = "UPDATE Post SET title = ?, content = ?, board_type = ?, image_path = ?, watched = ? WHERE post_id = ?";
+        String sql = "UPDATE Post SET title = ?, content = ?, board_type = ?, image_path = ?, is_watched = ? WHERE post_id = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 

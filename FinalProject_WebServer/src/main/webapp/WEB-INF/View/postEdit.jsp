@@ -38,9 +38,8 @@
     </c:if>
 
     <label>
-    
-        <input type="checkbox" name="watched" value="true" ${post.watched ? "checked" : ""} />
-        영화를 봤어요!
+    	<input type="checkbox" name="watched" value="true" 
+  		<c:if test="${post.watched}">checked</c:if> /> 봤어요
     </label><br><br>
 
     <button type="submit" class="btn btn-success">수정 완료</button>

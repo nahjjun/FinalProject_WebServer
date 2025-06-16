@@ -178,6 +178,9 @@ public class PostController extends HttpServlet {
                 String boardType = request.getParameter("boardType");
                 post.setCreatedAt(LocalDateTime.now());
                 post.setBoardType(boardType);
+                String watchedParam = request.getParameter("watched");
+                boolean isWatched = watchedParam != null;
+                post.setWatched(isWatched); 
 
                 boardService.createPost(post);
                 // ✅등록 완료 메시지 세션에 저장
@@ -195,10 +198,9 @@ public class PostController extends HttpServlet {
                 updatedPost.setContent(request.getParameter("content"));
                 updatedPost.setBoardType(request.getParameter("boardType"));
                 updatedPost.setUpdatedAt(LocalDateTime.now());
-                // 체크박스 값 처리
-                String watchedParam = request.getParameter("watched");
-                boolean isWatched = "true".equals(watchedParam); // 체크됐을 때만 true
-                updatedPost.setWatched(isWatched);
+                updatedPost.setWatched(request.getParameter("watched") != null);
+
+
 
                 boardService.updatePost(updatedPost);
                 

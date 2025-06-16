@@ -19,6 +19,9 @@
     <span>작성자: ${post.userName}</span>
     <span>작성일: ${post.formattedCreatedAt}</span>
     <span>조회수: ${post.viewCount}</span>
+    <c:if test="${post.watched}">
+   		 <span style="color:green;">✔ 본 영화입니다</span>
+	  </c:if>
   </div>
 
 
