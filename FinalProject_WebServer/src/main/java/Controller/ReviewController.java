@@ -196,7 +196,11 @@ public class ReviewController extends HttpServlet {
 	    if (!success) {
 	        request.setAttribute("errorScript", "<script>alert('리뷰 수정에 실패했습니다.');</script>");
 	    }
-	 // 성공 시 상세 페이지로 리디렉션
+	    
+	    //리뷰 반영 후 총 평점 재계산
+	    reviewService.updateReviewPoint(movie_id);
+	    
+	    // 성공 시 상세 페이지로 리디렉션
 	    response.sendRedirect("ReviewController?movie_id=" + movie_id);
 	}
 	

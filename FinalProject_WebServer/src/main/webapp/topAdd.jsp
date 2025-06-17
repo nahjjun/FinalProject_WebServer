@@ -24,11 +24,8 @@
     <a href="MovieController?action=movieDetail&movie_id=437" class="sgv-detail-btn">상세보기</a>
     <button id="playBtn" onclick="togglePlay()">정지하기 ⏸</button>
     <button id="muteBtn" onclick="toggleMute()">음소거 🔇</button>
-
-
   </div>
 </div>
-
 
 </body>
 </html>

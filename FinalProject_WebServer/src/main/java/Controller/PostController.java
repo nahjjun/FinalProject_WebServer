@@ -1,6 +1,8 @@
 package Controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @WebServlet("/PostController")
 @MultipartConfig(maxFileSize = 1024 * 1024 * 10)
@@ -181,12 +184,22 @@ public class PostController extends HttpServlet {
                 String watchedParam = request.getParameter("watched");
                 boolean isWatched = watchedParam != null;
                 post.setWatched(isWatched); 
+                
+                Part filePart = request.getPart("image");
+                if (filePart != null && filePart.getSize() > 0) {
+                    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                    String uploadDir = request.getServletContext().getRealPath("/resources/uploads");
+                    File uploadPath = new File(uploadDir);
+                    if (!uploadPath.exists()) uploadPath.mkdirs();
+
+                    filePart.write(uploadDir + File.separator + fileName);
+                    post.setImagePath(fileName); // Post에 이미지 경로 저장
+                }
 
                 boardService.createPost(post);
-                // ✅등록 완료 메시지 세션에 저장
+                // 등록 완료 메시지 세션에 저장
                 session.setAttribute("message", "게시글이 성공적으로 등록되었습니다.");
 
-                // ✅ 반드시 category 포함해서 리디렉션해야 글 리스트 뜸
                 response.sendRedirect("PostController?category=" + boardType);
                 break;
 
