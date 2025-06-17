@@ -45,71 +45,6 @@
        url("./../font/Pretendard-Bold.woff") format("woff");
 }
 
-
-
-body {
-   font-family: var(--font-default);
-  font-weight: 400;
-  color : var(--main-black);
-  line-height: 1.6;
-}
-
-/*헤더*/
-.header {
-  	 background: #FFF;
-	box-shadow: 0px 4px 10px 1px var(--gray-shadow);
- 	 padding: 1.5rem 1rem;
-  	position: relative;
-  	z-index: 10;
-}
-/* 전체 화면 높이를 쓰도록 설정 */
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
-/* wrapper는 세로 방향 flex 박스 */
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* 최소 높이를 화면 전체로 */
-}
-
-/* main 콘텐츠가 유동적으로 늘어나도록 */
-.wrapper > main, 
-.wrapper > div:nth-child(4) {
-  flex: 1;
-}
-
-/* footer는 자동 하단 정렬 */
-footer {
-  backgrou:root {
-  /* 기본 폰트 및 텍스트 색상 */
-  --font-default: "Pretendard", sans-serif;
-  --text-dark: #333;
-  --text-black: #1A1A1A;
-
-  /* 메인 초록 계열 색상 */
-  --main-green: #01A900;         /* 기본 메인 초록 (버튼, 강조) */
-  --main-green-bright: #A6FF00;  /* 밝은 연두 (하이라이트, 그라데이션 시작) */
-  --main-green-dark: #267a29;    /* 진한 초록 (hover 등) */
-  --main-green-border: #d5f0a0;  /* 연한 초록 테두리 (마이페이지, 테이블 등) */
-  --main-green-muted: #f5fff1;   /* 연한 초록 배경 (탭 버튼 기본) */
-  --main-green-table-head: #f1ffe1; /* 테이블 헤더 배경 */
-  --main-green-badge: #b3f000;   /* 작성자 배지 배경 */
-
-  /* 회색 계열 */
-  --gray-light: #f5f5f5;         /* hover 배경 등 */
-  --gray-border: #eee;           /* 테이블 행 구분선 */
-  --gray-shadow: rgba(0, 0, 0, 0.1); /* 그림자용 */
-
-  /* 버튼 상태 */
-  --btn-hover-bg: #468244; /* 버튼 hover 시 배경 */
-  --btn-border-gradient: linear-gradient(180deg, var(--main-green-bright) 0%, var(--main-green) 100%);
-}
-
-
-
 body {
    font-family: var(--font-default);
   font-weight: 400;
@@ -176,8 +111,6 @@ footer {
   background: linear-gradient(90deg, #A6FF00 0%, #01A900 100%);
    z-index: 2;
 }
-
-
 
 .gradient-text {
   background: linear-gradient(180deg, #A6FF00 0%, #01A900 100%);

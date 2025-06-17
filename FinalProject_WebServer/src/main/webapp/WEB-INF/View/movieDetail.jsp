@@ -86,9 +86,17 @@
 						${review.context}
 					</div>
 					<div class="content_action">
-						<a href="${pageContext.request.contextPath}/ReviewController?action=edit&review_id=${review.review_id}&movie_id=${movieInfo.movie_id}" class="edit-btn">수정</a>
-    					<span style="margin: 0 5px;">/</span>
-    					<a href="${pageContext.request.contextPath}/ReviewController?action=delete&review_id=${review.review_id}&movie_id=${movieInfo.movie_id}" class="delete-btn">삭제</a>
+						<!-- 수정: GET 방식으로 editForm 띄우기 -->
+						<form action="${pageContext.request.contextPath}/ReviewController" method="get" style="display:inline;">
+							<input type="hidden" name="action" value="editForm">
+							<input type="hidden" name="review_id" value="${review.review_id}">
+							<input type="hidden" name="movie_id" value="${movieInfo.movie_id}">
+							<button type="submit" class="edit-btn" style="border:none; background:none; color:#007bff; cursor:pointer;">수정</button>
+						</form>
+						<span style="margin: 0 5px;">/</span>
+
+						<!-- 삭제: GET 방식으로 delete 실행 -->
+						<a href="${pageContext.request.contextPath}/ReviewController?action=delete&review_id=${review.review_id}&movie_id=${movieInfo.movie_id}" class="delete-btn">삭제</a>
 					</div>
 					
 					<div class="review_action">

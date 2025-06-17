@@ -20,8 +20,7 @@
 	    <c:if test="${category == 'movie'}">
 		     <input type="file" name="image" /><br><br>
 		        <label>
-		        	<input type="checkbox" name="watched" value="true" />
-		        	영화를 봤어요!
+  					<input type="checkbox" name="watched" value="true" /> 봤어요
 		    </label><br>
 		</c:if>
 	

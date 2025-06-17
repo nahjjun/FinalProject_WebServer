@@ -393,4 +393,62 @@ public class ReviewRepository {
 			return false;
 		}
 	}
+	//리뷰 id로 해당 리뷰 정보 조회하는 함수
+	public Map<String, Object> findReviewById(int review_id) {
+	    String sql = "SELECT r.review_id, r.user_id, r.movie_id, r.context, r.rating, r.review_date, u.name, u.class " +
+	                 "FROM `Review` r JOIN `User` u ON r.user_id = u.user_id WHERE r.review_id = ?";
+	    Map<String, Object> review = new HashMap<>();
+
+	    try {
+	        Connection con = DBUtil.getConnection();
+	        PreparedStatement pstmt = con.prepareStatement(sql);
+	        pstmt.setInt(1, review_id);
+
+	        ResultSet rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            review.put("review_id", rs.getInt("review_id"));
+	            review.put("user_id", rs.getInt("user_id"));
+	            review.put("movie_id", rs.getInt("movie_id"));
+	            review.put("context", rs.getString("context"));
+	            review.put("rating", rs.getInt("rating"));
+	            review.put("review_date", rs.getDate("review_date"));
+	            review.put("name", rs.getString("name"));
+	            review.put("user_class", rs.getString("class"));
+	        }
+
+	        rs.close();
+	        pstmt.close();
+	        con.close();
+
+	        return review.isEmpty() ? null : review;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+	//리뷰 내용을 수정하는 함수
+	public boolean updateReviewById(int review_id, String context, int rating) {
+	    String sql = "UPDATE `Review` SET context = ?, rating = ? WHERE review_id = ?";
+
+	    try {
+	        Connection con = DBUtil.getConnection();
+	        PreparedStatement pstmt = con.prepareStatement(sql);
+	        pstmt.setString(1, context);
+	        pstmt.setInt(2, rating);
+	        pstmt.setInt(3, review_id);
+
+	        int updated = pstmt.executeUpdate();
+
+	        pstmt.close();
+	        con.close();
+
+	        return updated > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
+
 }
