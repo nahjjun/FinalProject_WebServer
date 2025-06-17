@@ -27,7 +27,7 @@
 
   <c:if test="${post.imagePath != null}">
     <div class="post-detail-image">
-      <img src="../resources/uploads/${post.imagePath}" alt="첨부 이미지" />
+      <img src="${pageContext.request.contextPath}/resources/uploads/${post.imagePath}" />
     </div>
   </c:if>
 
