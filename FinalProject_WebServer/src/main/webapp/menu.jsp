@@ -23,15 +23,15 @@
 		      </ul>
 		    </li>
 		    <li>
-		      <a href="TheaterController?theaterName=default" class="menu-item">극장</a>
+		      <a href="${pageContext.request.contextPath}TheaterController?theaterName=default" class="menu-item">극장</a>
 		      <ul>
-		        <li><a href="TheaterController?theaterName=default">SGV 극장</a></li>
+		        <li><a href="${pageContext.request.contextPath}TheaterController?theaterName=default">SGV 극장</a></li>
 		      </ul>
 		    </li>
 		    <li>
-		      <a href="reservation.jsp" class="menu-item">예매</a>
+		      <a href="TicketController?action=default" class="menu-item">예매</a>
 		      <ul>
-		        <li><a href="#">예매하기</a></li>
+		        <li><a href="TicketController?action=default">예매하기</a></li>
 		      </ul>
 		    </li>
 		    <li>

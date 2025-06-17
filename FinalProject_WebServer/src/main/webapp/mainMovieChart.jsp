@@ -28,7 +28,7 @@
 	          <small class="text-muted">⭐ ${movie.review_point}/5</small>
 	          <small class="text-muted">개봉일: ${movie.date}</small>
 	          <div class="mt-2 d-flex flex-column gap-1">
-	            <a href="#" class="btn btn-sm btn-outline-success">예매하기</a>
+	            <a href="TicketController?action=default" class="btn btn-sm btn-outline-success">예매하기</a>
 	            <a href="MovieController?action=movieDetail&movie_id=${movie.movie_id}" class="btn btn-sm btn-outline-success">상세정보</a>
 	          </div>
 	        </div>

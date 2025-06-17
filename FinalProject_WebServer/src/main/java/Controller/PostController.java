@@ -106,33 +106,33 @@ public class PostController extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/View/postEdit.jsp").forward(request, response);
                 break;
 	            	
-        case "delete":
-        	 int deleteId = Integer.parseInt(request.getParameter("postId"));
-             boardService.deletePost(deleteId);
-             response.sendRedirect("PostController?category=free");
-             break;
-
-            
-        case "like_comment":
-        	processCommentReaction(request, response, true);
-            break;
-
-        case "dislike_comment":
-            processCommentReaction(request, response, false);
-            break;
-            
-        case "edit_comment":
-            int editCommentId = Integer.parseInt(request.getParameter("commentId"));
-            String newContent = request.getParameter("newContent");
-            commentService.updateComment(editCommentId, newContent);
-            response.sendRedirect("PostController?action=view&postId=" + request.getParameter("postId"));
-            break;
-
-        case "delete_comment":
-            int delCommentId = Integer.parseInt(request.getParameter("commentId"));
-            commentService.deleteComment(delCommentId);
-            response.sendRedirect("PostController?action=view&postId=" + request.getParameter("postId"));
-            break;
+	        case "delete":
+	        	 int deleteId = Integer.parseInt(request.getParameter("postId"));
+	             boardService.deletePost(deleteId);
+	             response.sendRedirect("PostController?category=free");
+	             break;
+	
+	            
+	        case "like_comment":
+	        	processCommentReaction(request, response, true);
+	            break;
+	
+	        case "dislike_comment":
+	            processCommentReaction(request, response, false);
+	            break;
+	            
+	        case "edit_comment":
+	            int editCommentId = Integer.parseInt(request.getParameter("commentId"));
+	            String newContent = request.getParameter("newContent");
+	            commentService.updateComment(editCommentId, newContent);
+	            response.sendRedirect("PostController?action=view&postId=" + request.getParameter("postId"));
+	            break;
+	
+	        case "delete_comment":
+	            int delCommentId = Integer.parseInt(request.getParameter("commentId"));
+	            commentService.deleteComment(delCommentId);
+	            response.sendRedirect("PostController?action=view&postId=" + request.getParameter("postId"));
+	            break;
     }
 }
 
@@ -180,10 +180,10 @@ public class PostController extends HttpServlet {
                 post.setBoardType(boardType);
 
                 boardService.createPost(post);
-                // ✅등록 완료 메시지 세션에 저장
+                // 등록 완료 메시지 세션에 저장
                 session.setAttribute("message", "게시글이 성공적으로 등록되었습니다.");
 
-                // ✅ 반드시 category 포함해서 리디렉션해야 글 리스트 뜸
+                // 반드시 category 포함해서 리디렉션해야 글 리스트 뜸
                 response.sendRedirect("PostController?category=" + boardType);
                 break;
 

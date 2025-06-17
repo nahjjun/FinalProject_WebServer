@@ -28,7 +28,7 @@
 			<p><b>개봉일:</b> ${movieInfo.date}</p>
 		</div>
 		<!-- btn btn-primary는 Bootstrap 스타일이다. (네이티브 버튼처럼 보임) -->
-		<a href="#" class="btn btn-primary">예매하기</a>
+		<a href="TicketController?action=default" class="btn btn-primary">예매하기</a>
 	</div>
 	<div class="movie_description">
 		<p> ${movieInfo.description}</p>

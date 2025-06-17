@@ -66,7 +66,7 @@ public class TheaterController extends HttpServlet {
             String json = mapper.writeValueAsString(result);
             
             // response.getWriter() : 응답 stream 반환 (PrintWriter 객체)
-            // .write()로 브라우저에게 json 문자열을 전달한다.
+            // .write()로 브라우저에게 json 문자열을 전달한다.cmd
             response.getWriter().write(json);
             return;
         }

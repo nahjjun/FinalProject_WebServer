@@ -40,7 +40,7 @@
 					<p class="card-text text-muted">개봉일: ${movie.get("date")}</p>
 				</div>
 				<div class="mt-auto d-flex flex-column gap-2">
-				  	<a href="#" class="btn btn-outline-success w-100">예매하기</a>
+				  	<a href="TicketController?action=default" class="btn btn-outline-success w-100">예매하기</a>
 				  	<a href="MovieController?action=movieDetail&movie_id=${movie.movie_id}" class="btn btn-outline-success w-100">상세정보</a>
 				</div>
 			</div>

@@ -37,7 +37,7 @@
 	          <h5 class="card-title">${movie.title}</h5>
 	          <p class="card-text">관람평: ⭐ ${movie.review_point}/5</p>
 	          <p class="card-text text-muted">개봉일: ${movie.date}</p>
-	          <a href="#" class="btn w-100">예매하기</a>
+	          <a href="TicketController?action=default" class="btn w-100">예매하기</a>
 			<a href="MovieController?action=movieDetail&movie_id=${movie.movie_id}" class="btn w-100">상세정보</a>
 
 	        </div>
