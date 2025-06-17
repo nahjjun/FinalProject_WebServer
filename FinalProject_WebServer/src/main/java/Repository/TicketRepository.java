@@ -3,6 +3,7 @@ package Repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -181,11 +182,20 @@ public class TicketRepository {
 					int seat_id = rs.getInt("seat_id");
 					
 					// 3. screening_id, user_id, seat_id로 ticket table에 데이터 추가하기
-					pstmt = con.prepareStatement(ticketSql);
+					pstmt = con.prepareStatement(ticketSql, Statement.RETURN_GENERATED_KEYS);
 					pstmt.setInt(1, user_id);
 					pstmt.setInt(2, screening_id);
 					pstmt.setInt(3, seat_id);
 					pstmt.executeUpdate();
+					
+					// 해당 티켓의 아이디 가져오기
+					ResultSet generatedKeys = pstmt.getGeneratedKeys();
+					if (generatedKeys.next()) {
+					    int ticket_id = generatedKeys.getInt(1); // 1번 컬럼이 PK
+					    System.out.println("[예매 성공!] - ticket_id: " + ticket_id);
+					} else {
+					    System.out.println("ticket_id 생성 실패");
+					}
 					
 					// 4. 해당 좌석 예약 여부를 TRUE로 최신화한다.
 					pstmt = con.prepareStatement(seatSql);

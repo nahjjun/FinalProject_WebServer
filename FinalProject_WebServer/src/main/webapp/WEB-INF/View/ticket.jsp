@@ -36,7 +36,7 @@
 		              	</c:forEach>
 		            </select>
 	          	</td>
-				<input type="hidden" id="theater_id", value="">
+				<input type="hidden" id="theater_id" name="theater_id" value="">
 				
 	          	<!-- 날짜 -->
 	          	<td>
@@ -52,15 +52,15 @@
 					    <button class="arrow_right" onclick="arrow_right()">⬇️;</button>
 	    			</div>
 	          	</td>
-	          	<input type="hidden" id="date", value="">
+	          	<input type="hidden" id="date" name="date" value="">
 	
 	          	<!-- 영화 -->
 	          	<td>
-	            	<select name="movieId" id="movieSelect">
+	            	<select name="movie_id" id="movieSelect">
 	              		<option>영화를 선택하세요</option>
 	            	</select>
 	          	</td>
-	          	<input type="hidden" id="movie_id", value="">
+	          	<input type="hidden" id="movie_id" name="movie_id" value="">
 	
 	          	<!-- 시간 -->
 	          	<td>
@@ -68,7 +68,7 @@
 	              		<option>시간 선택</option>
 	            	</select>
 	          	</td>
-	          	<input type="hidden" id="time", value="">
+	          	<input type="hidden" id="time" name="time" value="">
 	
 	          	<!-- 좌석 -->
 	          	<td>
@@ -83,7 +83,7 @@
 	      	</tbody>
 		</table>
 	    <br>
-	    <input type="button" onclick="ticketFunc()">예매하기</button>
+	    <button type="submit" onclick="return ticketFunc()">예매하기</button>
 	  </form>
 </body>
 </html>

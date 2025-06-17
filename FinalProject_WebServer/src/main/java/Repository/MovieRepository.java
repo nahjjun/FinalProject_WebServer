@@ -47,7 +47,7 @@ public class MovieRepository {
 				Date d = rs.getDate("target_date");
 				String date=null;
 				if(d == null) {
-					System.out.println("개봉일 정보가 null입니다.");
+					System.out.println("MovieRepository/getMovieInfo() -> 개봉일 정보가 null입니다.");
 					date = "개봉날짜 미정";
 				} else {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
@@ -101,7 +101,7 @@ public class MovieRepository {
 				Date d = rs.getDate("target_date");
 				String date=null;
 				if(d == null) {
-					System.out.println("개봉일 정보가 null입니다.");
+					System.out.println("MovieRepository/getBoxOfficeList() -> 개봉일 정보가 null입니다.");
 					date = "개봉날짜 미정";
 				} else {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
@@ -156,7 +156,7 @@ public class MovieRepository {
 				}
 				String target_date=null;
 				if(date == null) {
-					System.out.println("개봉일 정보가 null입니다.");
+					System.out.println("MovieRepository/getMovieInfoList() -> 개봉일 정보가 null입니다.");
 					target_date = "개봉날짜 미정";
 				} else {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");

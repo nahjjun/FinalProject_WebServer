@@ -176,13 +176,13 @@ function addOptionsToMovieSelect(movieList){
 	const movieSelect = document.getElementById("movieSelect");
 	
 	// movieSelect의 내부 innerHTML을 비워준다
-	movieSelect.innerHTML = "";
+	movieSelect.innerHTML = "<option>영화를 선택하세요</option>";
 	// movieList에 담긴 값만큼 
-	for(let i=0; i<movieList.size(); ++i){
+	for(let i=0; i<movieList.length; ++i){
 		// 새로운 option을 만들어서 value에는 movie_id, 안에 내용에는 영화 title을 지정해서 movieSelect의 자식에 추가해준다.
 		const option = document.createElement("option");
-		option.value = movieList[i].get("movie_id");
-		option.textContent = movieList[i].get("title");
+		option.value = movieList[i].movie_id;
+		option.textContent = movieList[i].title;
 		movieSelect.appendChild(option);
 	}
 }
@@ -202,11 +202,16 @@ function addEventListenerToMovieSelect(){
 		hiddenMovieId.value = movie_id;
 		
 		// theater_id 가져오기
-		const theater_id = document.getElementById("theater_id");
+		const theater_id = document.getElementById("theater_id").value;
 		// date 가져오기
-		const date = document.getElementById("date");
+		const date = document.getElementById("date").value;
 		
-		fetch(`TicketController?action=time&theater_id=${theater_id}&date=${date}&movie_id=${movie_id}`, {
+		
+		const encodedMovieId = encodeURIComponent(movie_id);
+		const encodedTheaterId = encodeURIComponent(theater_id);
+		const encodedDate = encodeURIComponent(date);
+		
+		fetch(`TicketController?action=time&theater_id=${encodedTheaterId}&date=${encodedDate}&movie_id=${encodedMovieId}`, {
 			method:"GET",
 			headers:{
 				"X-Requested-With": "XMLHttpRequest"
@@ -223,7 +228,7 @@ function addOptionsToTimeSelect(timeList) {
 	const timeSelect = document.getElementById("timeSelect");
 
 	// 기존 옵션 초기화
-	timeSelect.innerHTML = "";
+	timeSelect.innerHTML = "<option>시간 선택</option>";
 
 	// timeList는 ["10:00"...] 형태의 문자열 배열
 	timeList.forEach(time => {
@@ -259,27 +264,27 @@ function ticketFunc(){
 	// 필수 값들이 비어있을 경우 경고
 	if (!theater_id) {
 	  alert("극장을 선택해주세요.");
-	  return;
+	  return false;
 	}
 	if (!date) {
 	  alert("날짜를 선택해주세요.");
-	  return;
+	  return false;
 	}
 	if (!movie_id) {
 	  alert("영화를 선택해주세요.");
-	  return;
+	  return false;
 	}
 	if (!time) {
 	  alert("시간을 선택해주세요.");
-	  return;
+	  return false;
 	}
 	if (!row || !col) {
 	  alert("좌석의 행/열을 입력해주세요.");
-	  return;
+	  return false;
 	}
 
 	// 모든 값이 채워져 있으면 폼 제출
-	document.querySelector("form").submit();	
+	return true;	
 }
 
 

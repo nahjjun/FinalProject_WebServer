@@ -39,7 +39,7 @@ public class SearchRepository {
 				}
 				String target_date=null;
 				if(date == null) {
-					System.out.println("개봉일 정보가 null입니다.");
+					System.out.println("SearchRepository/getSearchInfoList() -> 개봉일 정보가 null입니다.");
 					target_date = "개봉날짜 미정";
 				} else {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");

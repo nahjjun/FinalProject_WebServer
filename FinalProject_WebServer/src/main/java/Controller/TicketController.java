@@ -79,10 +79,13 @@ public class TicketController extends HttpServlet {
 	// ajax로 동적으로 "영화 목록" 부분만 화면을 처리해줄 것이므로, dispatcher를 사용하지 않는다.
 	private void sendAvailableMovies(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 사용자가 지금까지 선택한 데이터들 가져옴
-	    int theater_Id = Integer.parseInt(request.getParameter("theater_Id"));
+	    int theater_id = Integer.parseInt(request.getParameter("theater_id"));
 	    String date = request.getParameter("date");
+	    System.out.println("theater_id : " + theater_id);
+	    System.out.println("date : " + date);
+	    
 	    // 각 영화의 movie_id와 영화 이름이 들어간 배열
-	    List<Map<String, Object>> movieList = ticketService.getMovieListByTheaterAndDate(theater_Id, date);	    
+	    List<Map<String, Object>> movieList = ticketService.getMovieListByTheaterAndDate(theater_id, date);	    
         if(movieList == null) System.out.println("movieList가 비었습니다");
         
 	    // AJAX 요청이라면 JSON으로 응답
@@ -111,6 +114,11 @@ public class TicketController extends HttpServlet {
 	    String date = request.getParameter("date");
 	    int movie_id = Integer.parseInt(request.getParameter("movie_id"));
 	    List<String> timeList = ticketService.getTimeList(theater_id, date, movie_id);
+	    System.out.println("theater_id : " + theater_id);
+	    System.out.println("date : " + date);
+	    System.out.println("movie_id : " + movie_id);
+	    System.out.println("timeList 길이 : " + timeList.size());
+	    
 	    // AJAX 요청이라면 JSON으로 응답
         // 요청에서 보낸 헤더 중 "X-Requested-With"가 "XMLHttpRequest"인지 확인한다.
         if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
@@ -181,13 +189,21 @@ public class TicketController extends HttpServlet {
 	    int row_num = Integer.parseInt(request.getParameter("row"));
 	    int col_num = Integer.parseInt(request.getParameter("col"));
 	    
+	    System.out.println("user_id : " + user_id);
+	    System.out.println("theater_id : " + theater_id);
+	    System.out.println("date : " + date);
+	    System.out.println("movie_id : " + movie_id);
+	    System.out.println("time : " + time);
+	    System.out.println("row_num : " + row_num);
+	    System.out.println("col_num : " + col_num);
 	    
 	    if(!ticketService.insertTicket(user_id, theater_id, movie_id, row_num, col_num, time, date)) {
 	    	System.out.println("예매 실패");
-	    	response.sendRedirect("/WEB-INF/View/ticketFail.jsp");
+	    	response.sendRedirect(request.getContextPath() + "/MainPageController");
 	    	return;
 	    }
-        response.sendRedirect("/WEB-INF/View/ticketSuccess.jsp");
+	    
+        response.sendRedirect(request.getContextPath() + "/MainPageController");
 	}
 	
 }
