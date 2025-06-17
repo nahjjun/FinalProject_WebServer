@@ -26,12 +26,12 @@ public class MainPageController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 
-		// ✅ 무비차트 데이터 가져오기
+		// 무비차트 데이터 가져오기
 		List<Map<String, Object>> boxOfficeList = movieService.getBoxOfficeList();
 		boxOfficeList.sort((m1, m2) -> (int) m1.get("rank") - (int) m2.get("rank"));
 		request.setAttribute("boxOfficeList", boxOfficeList);
 
-		// ✅ 로그아웃 알림 체크
+		// 로그아웃 알림 체크
 		String logout = request.getParameter("logout");
 		if ("1".equals(logout)) {
 			request.setAttribute("errorScript", "<script>alert('로그아웃 되었습니다!');</script>");

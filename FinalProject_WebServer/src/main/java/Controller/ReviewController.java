@@ -37,7 +37,7 @@ public class ReviewController extends HttpServlet {
 		
 		String action = request.getParameter("action");
 
-		// ✅ null 체크 먼저
+		// null 체크 먼저
 		if (action == null) {
 			System.out.println("[ReviewController] action 파라미터가 null입니다.");
 			response.sendRedirect("MainPageController"); 
@@ -158,7 +158,7 @@ public class ReviewController extends HttpServlet {
 		
 		// 리뷰등록 후, 해당 리뷰에 맞는 리뷰 reaction을 만들어준다.
 		if(!reviewService.createReviewReaction(user_id, review_id)) {
-			System.out.println("ReviewController/registerFunc() -> 새로운 리엑션 추가하기 실패");
+			System.out.println("ReviewController/registerFunc() -> 새로운 리액션 추가하기 실패");
 		}
 		return true;
 	}
