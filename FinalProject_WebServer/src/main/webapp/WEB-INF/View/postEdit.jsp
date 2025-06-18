@@ -19,7 +19,7 @@
 	  <c:remove var="message" scope="session" />
 	</c:if>
 	
-	<h2 class = "title-style" style="padding: 20px;">리뷰 수정</h2>
+	<h2 class = "title-style" style="padding: 20px;">게시물 수정</h2>
 	
 	
 	<form action="PostController?action=update" method="post" enctype="multipart/form-data" style="padding: 20px;">
